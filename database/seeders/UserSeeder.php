@@ -20,12 +20,20 @@ class UserSeeder extends Seeder
             'email' => 'dcoronacollis@gmail.com',
             'password' => Hash::make('123456'),
             'role' => 'admin',
+            'avatar' => 'defaultstringavatar',
+            'latitude' => 40,
+            'longitude' => 1,
+            'activated' => true,
         ]);
         DB::table('users')->insert([
             'name' => 'David User',
             'email' => 'corona_121@hotmail.com',
             'password' => Hash::make('123456'),
             'role' => 'user',
+            'avatar' => 'defaultstringavatar',
+            'latitude' => 35,
+            'longitude' => -1,
+            'activated' => true,
         ]);
     }
 }

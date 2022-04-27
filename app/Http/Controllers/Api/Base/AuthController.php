@@ -3,25 +3,18 @@
 namespace App\Http\Controllers\Api\Base;
 
 use App\Models\User;
-
+use App\Models\PasswordResets;
+use App\Notifications\PasswordReset;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class AuthController extends Controller
 {
-
-    // private $active_guard = 'users';
-    // public $active_guard;
-    // public $class;
-
-    // public function __construct()
-    // {
-    //     $this->middleware('role:users', ['except' => ['login']]);
-    // }
-
-
     public function login(Request $request)
     {
         $credentials = $request->only(['email', 'password']);
@@ -30,6 +23,15 @@ class AuthController extends Controller
         if (!$token = JWTAuth::attempt($credentials)) {
            return response()->json(['error' => 'Unauthorized'], 401);
         }
+
+        $user = auth()->user();
+        if (isset($request->lat)){
+            $user->latitude = $request->lat;
+        }
+        if (isset($request->lng)){
+            $user->longitude = $request->lng;
+        }
+        $user->save();
 
         return $this->respondWithToken($token);
     }
@@ -46,11 +48,12 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-
         $v = Validator::make($request->all(), [
             'email' => 'required|email|unique:users',
-            'password'  => 'required|min:6|confirmed',
+            'password'  => 'required|min:6',
             'name'  => 'required',
+            'latitude' => 'required',
+            'longitude' => 'required',
         ]);
 
         if ($v->fails())
@@ -66,6 +69,10 @@ class AuthController extends Controller
         $user->password = bcrypt($request->password);
         $user->name = $request->name;
         $user->role = 'user';
+        $user->latitude =  $request->latitude;
+        $user->longitude = $request->longitude;
+        $user->activated = false;
+        $user->avatar = isset($request->avatar) ? $request->avatar : 'unstringpordefectoapi';
         $user->save();
 
         return response()->json(['status' => 'success'], 200);
@@ -77,6 +84,65 @@ class AuthController extends Controller
         return response()->json(['message' => 'Deslogueado correctamente.']);
     }
 
+    public function forgotPassword(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+
+        $email = $request->email;
+        $token = Str::random(64);
+        $user = User::where('email', $email)->get()->first();
+
+        if(is_null($user))
+        {
+            return response()->json(['message' => 'Usuario no encontrado.']);
+        }
+
+        PasswordResets::where('email', $email)->delete();
+        $r = PasswordResets::create([
+            'email' => $email,
+            'token' => $token,
+            'created_at' => Carbon::now()
+        ]);
+
+        $user->notify(new PasswordReset($r->token));
+
+        return response()->json(['status' => 'success', 'message' => 'Email de reseteo de contraseña enviado correctamente.', 'token' => $token], 200);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $validation = Validator::make($request->all(), [
+            'password'  => 'required|min:6'
+        ]);
+
+        if ($validation->fails())
+        {
+            return response()->json(['status' => 'error', 'errors' => $validation->errors()], 422);
+        }
+
+        $token = $request->token;
+        $password = $request->password;
+
+        $reset = PasswordResets::where('token',$token)->first();
+        if(!$reset)
+        {
+            return response()->json(['status' => 'error', 'message' => 'El token no es válido o ha caducado.'], 401);
+        }
+
+        $user = User::where('email', $reset->email)->get()->first();
+        if(!is_null($user))
+        {
+            $user->password = bcrypt($password);
+            $user->save();
+            $reset->delete();
+            return response()->json(['status' => 'success', 'message' => 'La contraseña se ha modificado correctamente'], 200);
+        }
+        else
+        {
+            return response()->json(['status' => 'error', 'message' => 'Usuario no encontrado'], 404);
+        }
+    }
+
     protected function respondWithToken($token)
     {
         return response()->json([
@@ -84,14 +150,7 @@ class AuthController extends Controller
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
             'user' => auth()->user(),
-        ]);
+        ], 200);
     }
-
-
-    // public function guard()
-    // {
-    //     return Auth::guard($this->active_guard);
-    // }
-
 
 }
