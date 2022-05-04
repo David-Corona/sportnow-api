@@ -81,7 +81,7 @@ class AuthController extends Controller
     public function logout()
     {
         auth()->logout();
-        return response()->json(['message' => 'Deslogueado correctamente.']);
+        return response()->json(['status' => 'success', 'message' => 'Deslogueado correctamente.']);
     }
 
     public function forgotPassword(Request $request)
@@ -94,7 +94,7 @@ class AuthController extends Controller
 
         if(is_null($user))
         {
-            return response()->json(['message' => 'Usuario no encontrado.']);
+            return response()->json(['status' => 'success', 'message' => 'Usuario no encontrado.'], 404);
         }
 
         PasswordResets::where('email', $email)->delete();
