@@ -12,7 +12,9 @@ class AdminUserController extends UserController
     // Route::get('admin/users/{id}', [AdminUserController::class, 'show']);
     // Route::put('admin/users/{id}', [AdminUserController::class, 'update']);
     // Route::get('admin/users/{id}/{valor}',  [AdminUserController::class, 'activar']);
-    // Route::delete('admin/users/{id}', [AdminUserController::class, 'delete']);
+    // Route::delete('admin/users/{id}', [AdminUserController::class, 'destroy']);
+
+    // heredados todos menos destroy y activar? quizá actualizar/sobrescribir para filtros en index?
 
 
 
