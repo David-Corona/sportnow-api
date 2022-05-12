@@ -36,12 +36,21 @@ Route::group(["middleware" => "role:user,admin"], function () {
     // Users
     Route::get('users', [UserController::class, 'index']);
     Route::get('users/me', [UserController::class, 'me']);
-    Route::put('users/me', [UserController::class, 'update']);
-    // Route::put('users/me/avatar', [UserController::class, 'avatar']);
-    // Route::put('users/me/password', [UserController::class, 'password']);
     Route::get('users/{id}', [UserController::class, 'show']);
+    Route::put('users/me', [UserController::class, 'update']);
+    Route::put('users/me/avatar', [UserController::class, 'updateAvatar']);
+    Route::put('users/me/password', [UserController::class, 'updatePassword']);
 
+});
 
+Route::group(["middleware" => "role:admin"], function () {
+
+    // AdminUsers
+    Route::get('admin/users', [AdminUserController::class, 'index']);
+    Route::get('admin/users/{id}', [AdminUserController::class, 'show']);
+    Route::put('admin/users/{id}', [AdminUserController::class, 'update']);
+    Route::get('admin/users/{id}/{valor}',  [AdminUserController::class, 'activar']);
+    Route::delete('admin/users/{id}', [AdminUserController::class, 'delete']);
 });
 
 

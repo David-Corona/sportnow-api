@@ -21,7 +21,7 @@ class AuthController extends Controller
 
         // if (!$token = auth($this->active_guard)->attempt($credentials)) {
         if (!$token = JWTAuth::attempt($credentials)) {
-           return response()->json(['error' => 'Unauthorized'], 401);
+           return response()->json(['error' => 'Unauthorized', 'message' => 'Email o contraseña incorrectos.'], 401);
         }
 
         $user = auth()->user();
@@ -68,11 +68,27 @@ class AuthController extends Controller
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
         $user->name = $request->name;
-        $user->role = 'user';
         $user->latitude =  $request->latitude;
         $user->longitude = $request->longitude;
+        $user->role = 'user';
         $user->activated = false;
-        $user->avatar = isset($request->avatar) ? $request->avatar : 'unstringpordefectoapi';
+        $user->avatar = '/images/default-avatar.jpg';
+
+        // $user->avatar = isset($request->avatar) ? $request->avatar : '/images/default-avatar.jpg';
+        // if($request->hasFile('avatar')) {
+        //     $nombreFichero = $request->file('avatar')->getClientOriginalName(); // "Nombre Imagen.jpg"
+        //     $nombreAvatar = pathinfo($nombreFichero, PATHINFO_FILENAME); // "Nombre Imagen"
+        //     $extension = $request->file('avatar')->getClientOriginalExtension(); //"jpg"
+        //     $nuevoNombre = '/uploads/'.str_replace(' ', '_', $nombreAvatar).'-'.date('YmdHis').'.'.$extension; //"Nombre_Imagen-20220508115359.jpg"
+
+        //     // $path = $request->file('avatar')->storeAs(public_path().'/uploads', $nuevoNombre, 'public');
+        //     $request->file('avatar')->move(public_path('uploads'), $nuevoNombre); //guarda en public/uploads
+
+        //     $user->avatar = $nuevoNombre;
+        // } else {
+        //     $user->avatar = '/images/default-avatar.jpg';
+        // }
+
         $user->save();
 
         return response()->json(['status' => 'success'], 200);
@@ -145,12 +161,16 @@ class AuthController extends Controller
 
     protected function respondWithToken($token)
     {
-        return response()->json([
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60,
-            'user' => auth()->user(),
-        ], 200);
+        if(auth()->user()->activated !== 1) {
+            return response()->json(['error' => 'Desactivado', 'message' => 'Su cuenta está desactivada.'], 401);
+        } else {
+            return response()->json([
+                'access_token' => $token,
+                'token_type' => 'bearer',
+                'expires_in' => auth()->factory()->getTTL() * 60,
+                'user' => auth()->user(),
+            ], 200);
+        }
     }
 
 }
