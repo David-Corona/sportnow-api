@@ -10,6 +10,7 @@ use Exception;
 class AdminDeporteController extends Controller
 {
 
+    //TODO: ordenar? paginar?
     public function index(Request $request){
         try {
             $deportes = Deporte::whereNull('deleted_at')

@@ -13,7 +13,7 @@ use Exception;
 class UserController extends Controller
 {
 
-
+    //TODO: filtros? ordenar?
     public function index(Request $request)
     {
         try{
@@ -37,7 +37,6 @@ class UserController extends Controller
         try {
             // $user = User::where('id', $request->id)->get()->first();
             $user = User::findOrFail($id);
-
             $isMe = auth()->user()->id==$id ? true : false;
             return response()->json(['status' => 'success', 'data' => $user, 'me' => $isMe], 200);
         } catch (Exception $e) {
@@ -45,7 +44,7 @@ class UserController extends Controller
         }
     }
 
-    public function update(Request $request){
+    public function updateMe(Request $request){
         try {
             $v = Validator::make($request->all(), [
                 'email' => 'required|email',
@@ -67,7 +66,7 @@ class UserController extends Controller
         }
     }
 
-
+    // TODO: limpiar si está bien
     public function updateAvatar(Request $request){
 
         try {
@@ -151,7 +150,6 @@ class UserController extends Controller
         // $data->save();
 
 
-
     }
 
     public function updatePassword(Request $request){
@@ -173,8 +171,4 @@ class UserController extends Controller
         }
         return response()->json(['status' => 'success', 'data' => $user], 200);
     }
-
-
-
-
 }

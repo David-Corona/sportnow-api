@@ -30,23 +30,20 @@ Route::group(["middleware" => "role:user,admin"], function () {
     Route::get('users', [UserController::class, 'index']);
     Route::get('users/me', [UserController::class, 'me']);
     Route::get('users/{id}', [UserController::class, 'show']);
-    Route::put('users/me', [UserController::class, 'update']);
+    Route::put('users/me', [UserController::class, 'updateMe']);
     Route::put('users/me/avatar', [UserController::class, 'updateAvatar']);
     Route::put('users/me/password', [UserController::class, 'updatePassword']);
 });
 
 Route::group(["middleware" => "role:admin"], function () {
     Route::prefix('admin')->group(function () {
-    // AdminUsers
-    // Route::get('users', [AdminUserController::class, 'index']);
-    // Route::get('users/{id}', [AdminUserController::class, 'show']);
-    // Route::put('users/{id}', [AdminUserController::class, 'update']);
-    // Route::delete('users/{id}', [AdminUserController::class, 'destroy']);
-    Route::apiResource('users', AdminUserController::class);
-    Route::get('users/{id}/{valor}',  [AdminUserController::class, 'activar']);
 
-    // AdminDeporte
-    Route::apiResource('deportes', AdminDeporteController::class);
+        // AdminUsers
+        Route::apiResource('users', AdminUserController::class);
+        Route::put('users-active/{id}', [AdminUserController::class, 'activar']);
+
+        // AdminDeporte
+        Route::apiResource('deportes', AdminDeporteController::class);
 
     });
 
