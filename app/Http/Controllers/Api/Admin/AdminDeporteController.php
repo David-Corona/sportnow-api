@@ -12,44 +12,69 @@ class AdminDeporteController extends Controller
 
     public function index(Request $request){
         try {
-            $deportes = Deporte::where('deleted_at', null)
+            $deportes = Deporte::whereNull('deleted_at')
             ->filter()
             // ->orderBy('nombre','ASC')
             // ->paginate(20)
             ->get();
 
-            return response()->json(['status' => 'success', 'data' => $deportes], 200);
+            // if(isset($request->page)) {
+            //     $languages = Deporte::whereNull('deleted_at')->orderBy('name', 'asc')->paginate(15);
+            // } else {
+            //     $languages = Deporte::whereNull('deleted_at')->orderBy('name', 'asc')->get();
+            // }
+
 
         } catch (Exception $e) {
             return response()->json(['status' => 'error', 'data' => [], 'message' => $e->getMessage()], 400);
         }
+        return response()->json(['status' => 'success', 'data' => $deportes], 200);
     }
 
 
-    public function show(Request $request){
-
-
-
+    public function show($id){
+        try {
+            $deporte = Deporte::findOrFail($id);
+        } catch (Exception $e) {
+            return response()->json(['status' => 'error', 'data' => null, 'message' => $e->getMessage()], 400);
+        }
+        return response()->json(['status' => 'success', 'data' =>  $deporte], 200);
     }
 
 
     public function store(Request $request){
-
-
-
+        $parameters = ["nombre", "max_participantes"];
+        try {
+            $deporte = New Deporte();
+            $deporte->fill($request->only($parameters));
+            $deporte->save();
+        } catch (Exception $e) {
+            return response()->json(['status' => 'error', 'data' => null, 'message' => $e->getMessage()], 400);
+        }
+        return response()->json(['status' => 'success', 'data' =>  $deporte], 200);
     }
 
 
-    public function update(Request $request){
-
-
-
+    public function update(Request $request, $id){
+        $parameters = ["nombre", "max_participantes"];
+        try {
+            $deporte = Deporte::findOrFail($id);
+            $deporte->fill($request->only($parameters));
+            $deporte->save();
+        } catch (Exception $e) {
+            return response()->json(['status' => 'error', 'data' => null, 'message' => $e->getMessage()], 400);
+        }
+        return response()->json(['status' => 'success', 'data' =>  $deporte], 200);
     }
 
 
-    public function destroy(Request $request){
-
-
-
+    public function destroy($id){
+        try {
+            $deporte = Deporte::findOrFail($id);
+            $deporte->delete();
+        } catch (Exception $e) {
+            return response()->json(['status' => 'error', 'data' => null, 'message' => $e->getMessage()], 400);
+        }
+        return response()->json(['status' => 'success'], 200);
     }
 }

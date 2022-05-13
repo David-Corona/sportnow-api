@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Base;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Exception;
 
 
 // use Intervention\Image\ImageManagerStatic as Image;
@@ -15,61 +16,81 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $users = User::where('deleted_at', null)->orderBy('name','ASC')->get();
-        return response()->json(['status' => 'success', 'data' => $users], 200);
+        try{
+            $users = User::where('deleted_at', null)->orderBy('name','ASC')->get();
+            return response()->json(['status' => 'success', 'data' => $users], 200);
+        } catch (Exception $e) {
+            return response()->json(['status' => 'error', 'item' => null, 'message' => $e->getMessage()]);
+        }
     }
 
     public function me(){
-        $user = auth()->user();
-        return response()->json(['status' => 'success', 'data' => $user, 'me' => true], 200);
+        try {
+            $user = auth()->user();
+            return response()->json(['status' => 'success', 'data' => $user, 'me' => true], 200);
+        } catch (Exception $e) {
+            return response()->json(['status' => 'error', 'item' => null, 'message' => $e->getMessage()]);
+        }
     }
 
-    public function show(Request $request){
-        $user = User::where('id', $request->id)->get()->first();
-        $isMe = auth()->user()->id==$request->id ? true : false;
-        return response()->json(['status' => 'success', 'data' => $user, 'me' => $isMe], 200);
+    public function show($id){
+        try {
+            // $user = User::where('id', $request->id)->get()->first();
+            $user = User::findOrFail($id);
+
+            $isMe = auth()->user()->id==$id ? true : false;
+            return response()->json(['status' => 'success', 'data' => $user, 'me' => $isMe], 200);
+        } catch (Exception $e) {
+            return response()->json(['status' => 'error', 'item' => null, 'message' => $e->getMessage()]);
+        }
     }
 
     public function update(Request $request){
-        $v = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'name'  => 'required',
-        ]);
+        try {
+            $v = Validator::make($request->all(), [
+                'email' => 'required|email',
+                'name'  => 'required',
+            ]);
 
-        if ($v->fails()) {
-            return response()->json(['status' => 'error', 'errors' => $v->errors()], 422);
+            if ($v->fails()) {
+                return response()->json(['status' => 'error', 'errors' => $v->errors()], 422);
+            }
+
+            $user = auth()->user();
+            $user->email = $request->email;
+            $user->name = $request->name;
+            $user->save();
+
+            return response()->json(['status' => 'success', 'data' => $user], 200);
+        } catch (Exception $e) {
+            return response()->json(['status' => 'error', 'item' => null, 'message' => $e->getMessage()]);
         }
-
-        $user = auth()->user();
-        $user->email = $request->email;
-        $user->name = $request->name;
-        $user->save();
-
-        return response()->json(['status' => 'success', 'data' => $user], 200);
     }
 
 
     public function updateAvatar(Request $request){
 
+        try {
+            //https://stackoverflow.com/questions/39942670/how-to-send-put-request-with-a-file-and-an-array-of-data-in-laravel
+            if($request->hasFile('avatar')) {
+                $nombreFichero = $request->file('avatar')->getClientOriginalName(); // "Nombre Imagen.jpg"
+                $nombreAvatar = pathinfo($nombreFichero, PATHINFO_FILENAME); // "Nombre Imagen"
+                $extension = $request->file('avatar')->getClientOriginalExtension(); //"jpg"
+                $nuevoNombre = '/uploads/'.str_replace(' ', '_', $nombreAvatar).'-'.date('YmdHis').'.'.$extension; //"Nombre_Imagen-20220508115359.jpg"
 
+                // $path = $request->file('avatar')->storeAs(public_path().'/uploads', $nuevoNombre, 'public');
+                $request->file('avatar')->move(public_path('uploads'), $nuevoNombre); //guarda en public/uploads
 
-        //https://stackoverflow.com/questions/39942670/how-to-send-put-request-with-a-file-and-an-array-of-data-in-laravel
-        if($request->hasFile('avatar')) {
-            $nombreFichero = $request->file('avatar')->getClientOriginalName(); // "Nombre Imagen.jpg"
-            $nombreAvatar = pathinfo($nombreFichero, PATHINFO_FILENAME); // "Nombre Imagen"
-            $extension = $request->file('avatar')->getClientOriginalExtension(); //"jpg"
-            $nuevoNombre = '/uploads/'.str_replace(' ', '_', $nombreAvatar).'-'.date('YmdHis').'.'.$extension; //"Nombre_Imagen-20220508115359.jpg"
+                $user = auth()->user();
+                $user->avatar = $nuevoNombre;
+                $user->save();
 
-            // $path = $request->file('avatar')->storeAs(public_path().'/uploads', $nuevoNombre, 'public');
-            $request->file('avatar')->move(public_path('uploads'), $nuevoNombre); //guarda en public/uploads
-
-            $user = auth()->user();
-            $user->avatar = $nuevoNombre;
-            $user->save();
-
-            return response()->json(['status' => 'success', 'data' => $user], 200);
-        } else {
-            return response()->json(['status' => 'error', 'data' => 'No se ha podido cargar la imagen.'], 200);
+                return response()->json(['status' => 'success', 'data' => $user], 200);
+            } else {
+                return response()->json(['status' => 'error', 'data' => 'No se ha podido cargar la imagen.'], 200);
+            }
+        } catch (Exception $e) {
+            return response()->json(['status' => 'error', 'item' => null, 'message' => $e->getMessage()]);
         }
 
         //return response()->json(['status' => 'success', 'data' => $user], 200);
@@ -134,18 +155,22 @@ class UserController extends Controller
     }
 
     public function updatePassword(Request $request){
-        $v = Validator::make($request->all(), [
-            'password'  => 'required|min:6',
-        ]);
+        try {
+            $v = Validator::make($request->all(), [
+                'password'  => 'required|min:6',
+            ]);
 
-        if ($v->fails()) {
-            return response()->json(['status' => 'error', 'errors' => $v->errors()], 422);
+            if ($v->fails()) {
+                return response()->json(['status' => 'error', 'errors' => $v->errors()], 422);
+            }
+
+            $user = auth()->user();
+            $user->password = bcrypt($request->password);
+            $user->save();
+
+        } catch (Exception $e) {
+            return response()->json(['status' => 'error', 'item' => null, 'message' => $e->getMessage()]);
         }
-
-        $user = auth()->user();
-        $user->password = bcrypt($request->password);
-        $user->save();
-
         return response()->json(['status' => 'success', 'data' => $user], 200);
     }
 
