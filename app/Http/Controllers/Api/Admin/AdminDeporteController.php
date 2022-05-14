@@ -27,7 +27,7 @@ class AdminDeporteController extends Controller
 
 
         } catch (Exception $e) {
-            return response()->json(['status' => 'error', 'data' => [], 'message' => $e->getMessage()], 400);
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
         }
         return response()->json(['status' => 'success', 'data' => $deportes], 200);
     }
@@ -37,7 +37,7 @@ class AdminDeporteController extends Controller
         try {
             $deporte = Deporte::findOrFail($id);
         } catch (Exception $e) {
-            return response()->json(['status' => 'error', 'data' => null, 'message' => $e->getMessage()], 400);
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
         }
         return response()->json(['status' => 'success', 'data' =>  $deporte], 200);
     }
@@ -50,7 +50,7 @@ class AdminDeporteController extends Controller
             $deporte->fill($request->only($parameters));
             $deporte->save();
         } catch (Exception $e) {
-            return response()->json(['status' => 'error', 'data' => null, 'message' => $e->getMessage()], 400);
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
         }
         return response()->json(['status' => 'success', 'data' =>  $deporte], 200);
     }
@@ -63,7 +63,7 @@ class AdminDeporteController extends Controller
             $deporte->fill($request->only($parameters));
             $deporte->save();
         } catch (Exception $e) {
-            return response()->json(['status' => 'error', 'data' => null, 'message' => $e->getMessage()], 400);
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
         }
         return response()->json(['status' => 'success', 'data' =>  $deporte], 200);
     }
@@ -74,7 +74,7 @@ class AdminDeporteController extends Controller
             $deporte = Deporte::findOrFail($id);
             $deporte->delete();
         } catch (Exception $e) {
-            return response()->json(['status' => 'error', 'data' => null, 'message' => $e->getMessage()], 400);
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
         }
         return response()->json(['status' => 'success'], 200);
     }

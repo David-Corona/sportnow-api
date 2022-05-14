@@ -7,10 +7,12 @@ use Illuminate\Support\Facades\Route;
 // Base
 use App\Http\Controllers\Api\Base\AuthController;
 use App\Http\Controllers\Api\Base\UserController;
+use App\Http\Controllers\Api\Base\EventoController;
 
 // Admin
 use App\Http\Controllers\Api\Admin\AdminUserController;
 use App\Http\Controllers\Api\Admin\AdminDeporteController;
+use App\Http\Controllers\Api\Admin\AdminEventoController;
 
 
 // Auth
@@ -33,6 +35,15 @@ Route::group(["middleware" => "role:user,admin"], function () {
     Route::put('users/me', [UserController::class, 'updateMe']);
     Route::put('users/me/avatar', [UserController::class, 'updateAvatar']);
     Route::put('users/me/password', [UserController::class, 'updatePassword']);
+
+    // Evento
+    // Route::apiResource('eventos', EventoController::class);
+    Route::get('eventos', [EventoController::class, 'index']);
+    Route::get('eventos/{id}', [EventoController::class, 'show']);
+    Route::post('eventos', [EventoController::class, 'store']);
+    // Route::put('eventos/{id}', [EventoController::class, 'update']);
+    // Route::delete('eventos/{id}', [EventoController::class, 'destroy']);
+
 });
 
 Route::group(["middleware" => "role:admin"], function () {
@@ -44,6 +55,9 @@ Route::group(["middleware" => "role:admin"], function () {
 
         // AdminDeporte
         Route::apiResource('deportes', AdminDeporteController::class);
+
+        // AdminEvento
+        Route::apiResource('eventos', AdminEventoController::class);
 
     });
 

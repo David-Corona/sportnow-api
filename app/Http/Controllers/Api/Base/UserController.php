@@ -56,7 +56,7 @@ class UserController extends Controller
             }
 
             $user = auth()->user();
-            $user->email = $request->email;
+            $user->email = $request->email; //TODO: quizá no tenga sentido permitir cambiarse el email
             $user->name = $request->name;
             $user->save();
 

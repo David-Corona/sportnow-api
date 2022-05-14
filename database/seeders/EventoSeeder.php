@@ -17,17 +17,23 @@ class EventoSeeder extends Seeder
         DB::table('eventos')->insert([
             'deporte_id' => 1,
             'fecha' => '2022-07-01 09:30:00',
-            'localizacion' => 'Club Pádel La Nucia',
+            'direccion' => 'Club Pádel La Nucia',
+            'latitud' => 38.602013,
+            'longitud' => -0.121925,
         ]);
         DB::table('eventos')->insert([
             'deporte_id' => 1,
             'fecha' => '2022-09-01 18:30:00',
-            'localizacion' => 'Club Pádel La Nucia',
+            'direccion' => 'Club Pádel La Nucia',
+            'latitud' => 38.602013,
+            'longitud' => -0.121925,
         ]);
         DB::table('eventos')->insert([
             'deporte_id' => 3,
             'fecha' => '2022-08-01 10:00:00',
-            'localizacion' => 'Ruta del Faro, Albir',
+            'direccion' => 'Ruta del Faro, Albir',
+            'latitud' => 38.567910,
+            'longitud' => -0.062958,
         ]);
     }
 }

@@ -15,10 +15,12 @@ class CreateEventosTable extends Migration
     {
         Schema::create('eventos', function (Blueprint $table) {
             $table->id();
-            // $table->foreignId('deporte_id')->constrained('deportes')->onDelete('cascade');
+            // $table->foreignId('deporte_id')->constrained('deportes')->onDelete('cascade'); //TODO
             $table->integer('deporte_id');
             $table->timestamp('fecha');
-            $table->string('localizacion');
+            $table->string('direccion');
+            $table->double('latitud');
+            $table->double('longitud');
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
         });

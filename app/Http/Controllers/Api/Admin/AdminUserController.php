@@ -9,12 +9,6 @@ use Exception;
 
 class AdminUserController extends UserController
 {
-    // usuarios: desactivar, cambiar email ?
-    // Route::get('admin/users/{id}/{valor}',  [AdminUserController::class, 'activar']);
-
-
-    // heredados todos menos destroy, store y activar? quizá actualizar/sobrescribir para filtros en index?
-
 
     public function update(Request $request, $id){
         try {
