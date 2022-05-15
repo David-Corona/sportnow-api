@@ -24,4 +24,16 @@ class EventoUsuarios extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
+
+    public function scopeFilter($query)
+    {
+        if (request('evento_id')) { //TODO: quizá quiera filtrar por el nombre?
+            $query->where('evento_id', request('evento_id'));
+        }
+        if (request('user_id')) { //TODO: quizá quiera filtrar por el nombre?
+            $query->where('user_id', request('user_id'));
+        }
+        return $query;
+    }
 }

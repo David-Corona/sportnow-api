@@ -8,11 +8,15 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Base\AuthController;
 use App\Http\Controllers\Api\Base\UserController;
 use App\Http\Controllers\Api\Base\EventoController;
+use App\Http\Controllers\Api\Base\EventoUsuariosController;
+use App\Http\Controllers\Api\Base\EventoComentariosController;
 
 // Admin
 use App\Http\Controllers\Api\Admin\AdminUserController;
 use App\Http\Controllers\Api\Admin\AdminDeporteController;
 use App\Http\Controllers\Api\Admin\AdminEventoController;
+use App\Http\Controllers\Api\Admin\AdminEventoUsuariosController;
+use App\Http\Controllers\Api\Admin\AdminEventoComentariosController;
 
 
 // Auth
@@ -44,6 +48,15 @@ Route::group(["middleware" => "role:user,admin"], function () {
     // Route::put('eventos/{id}', [EventoController::class, 'update']);
     // Route::delete('eventos/{id}', [EventoController::class, 'destroy']);
 
+    // EventoUsuarios
+    Route::post('eventos-usuarios', [EventoUsuariosController::class, 'store']);
+    Route::delete('eventos-usuarios/{id}', [EventoUsuariosController::class, 'destroy']);
+
+    // EventoComentarios
+    Route::get('eventos-comentarios', [EventoComentariosController::class, 'index']);
+    Route::post('eventos-comentarios', [EventoComentariosController::class, 'store']);
+
+
 });
 
 Route::group(["middleware" => "role:admin"], function () {
@@ -58,6 +71,15 @@ Route::group(["middleware" => "role:admin"], function () {
 
         // AdminEvento
         Route::apiResource('eventos', AdminEventoController::class);
+
+        // AdminEventoUsuarios
+        Route::get('eventos-usuarios', [AdminEventoUsuariosController::class, 'index']);
+
+        // AdminEventoComentarios
+        Route::apiResource('eventos-comentarios', AdminEventoComentariosController::class);
+        // Route::get('eventos-comentarios/{id}', [AdminEventoComentariosController::class, 'show']);
+        // Route::put('eventos-comentarios/{id}', [AdminEventoComentariosController::class, 'update']);
+        // Route::delete('eventos-comentarios/{id}', [AdminEventoComentariosController::class, 'destroy']);
 
     });
 

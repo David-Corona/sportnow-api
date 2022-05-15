@@ -14,7 +14,7 @@ class EventoController extends Controller
 
     public function index(Request $request){
         try {
-            $eventos = Evento::with('deporte')
+            $eventos = Evento::with('deporte', 'participantes')
             ->whereNull('deleted_at')
             ->filter()
             ->orderBy('fecha','ASC')
@@ -37,7 +37,7 @@ class EventoController extends Controller
 
     public function show($id){
         try {
-            $evento = Evento::with('deporte')->findOrFail($id);
+            $evento = Evento::with('deporte', 'participantes')->findOrFail($id);
         } catch (Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
         }
