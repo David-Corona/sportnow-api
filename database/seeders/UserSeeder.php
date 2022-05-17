@@ -21,8 +21,8 @@ class UserSeeder extends Seeder
             'password' => Hash::make('123456'),
             'role' => 'admin',
             'avatar' => '/images/default-avatar.jpg',
-            'latitude' => 40,
-            'longitude' => 1,
+            'latitude' => 39.54,
+            'longitude' => 1.14,
             'activated' => true,
         ]);
         DB::table('users')->insert([
@@ -31,8 +31,8 @@ class UserSeeder extends Seeder
             'password' => Hash::make('123456'),
             'role' => 'user',
             'avatar' => '/images/default-avatar.jpg',
-            'latitude' => 35,
-            'longitude' => -1,
+            'latitude' => 36.55,
+            'longitude' => -0.054,
             'activated' => true,
         ]);
         DB::table('users')->insert([
@@ -41,8 +41,8 @@ class UserSeeder extends Seeder
             'password' => Hash::make('123456'),
             'role' => 'user',
             'avatar' => '/images/default-avatar.jpg',
-            'latitude' => 36,
-            'longitude' => -2,
+            'latitude' => 36.89,
+            'longitude' => -0.056,
             'activated' => true,
         ]);
         DB::table('users')->insert([
@@ -51,8 +51,8 @@ class UserSeeder extends Seeder
             'password' => Hash::make('123456'),
             'role' => 'user',
             'avatar' => '/images/default-avatar.jpg',
-            'latitude' => 34,
-            'longitude' => -1,
+            'latitude' => 37.55,
+            'longitude' => -0.025,
             'activated' => true,
         ]);
         DB::table('users')->insert([
@@ -61,8 +61,38 @@ class UserSeeder extends Seeder
             'password' => Hash::make('123456'),
             'role' => 'user',
             'avatar' => '/images/default-avatar.jpg',
-            'latitude' => 32,
-            'longitude' => 0,
+            'latitude' => 35.77,
+            'longitude' => 0.0123,
+            'activated' => true,
+        ]);
+        DB::table('users')->insert([
+            'name' => 'Ana Pastor',
+            'email' => 'ana@gmail.com',
+            'password' => Hash::make('123456'),
+            'role' => 'user',
+            'avatar' => '/images/default-avatar.jpg',
+            'latitude' => 38.55,
+            'longitude' => 0.01,
+            'activated' => true,
+        ]);
+        DB::table('users')->insert([
+            'name' => 'Miriam Pérez',
+            'email' => 'miriam@gmail.com',
+            'password' => Hash::make('123456'),
+            'role' => 'user',
+            'avatar' => '/images/default-avatar.jpg',
+            'latitude' => 37.47,
+            'longitude' => -0.015,
+            'activated' => true,
+        ]);
+        DB::table('users')->insert([
+            'name' => 'Susana Rojo',
+            'email' => 'susana@gmail.com',
+            'password' => Hash::make('123456'),
+            'role' => 'user',
+            'avatar' => '/images/default-avatar.jpg',
+            'latitude' => 38.68,
+            'longitude' => 0.034,
             'activated' => true,
         ]);
     }

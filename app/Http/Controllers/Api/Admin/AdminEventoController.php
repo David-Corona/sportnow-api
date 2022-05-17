@@ -11,7 +11,7 @@ class AdminEventoController extends EventoController
 {
 
     public function update(Request $request, $id){
-        $parameters = ["deporte_id", "fecha", "direccion", "latitud", "longitud"];
+        $parameters = ["deporte_id", "fecha", "titulo", "descripcion", "direccion", "latitud", "longitud"];
         try {
             $evento = Evento::findOrFail($id);
             $evento->fill($request->only($parameters));
