@@ -41,7 +41,9 @@ class EventoComentariosController extends Controller
         try {
             $evento_comentarios = New EventoComentarios();
             $evento_comentarios->fill($request->only($parameters));
+            $evento_comentarios->user_id = $request->user_id ?? auth()->user()->id;
             $evento_comentarios->save();
+            $evento_comentarios->autor = auth()->user();
         } catch (Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
         }
