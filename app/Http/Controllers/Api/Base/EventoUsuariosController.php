@@ -24,6 +24,7 @@ class EventoUsuariosController extends Controller
 
             if ($participantes < $max_participantes) {
                 $evento_usuarios = New EventoUsuarios();
+                // $evento_usuarios->user_id = $request->user_id ?? auth()->user()->id;
                 $evento_usuarios->fill($request->only($parameters));
                 $evento_usuarios->save();
             } else {

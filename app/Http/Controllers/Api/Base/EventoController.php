@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Base;
 
 use App\Models\Evento;
+use App\Models\EventoUsuarios;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Exception;
@@ -53,6 +54,13 @@ class EventoController extends Controller
             $evento->fill($request->only($parameters));
             $evento->imagen = $request->imagen ?? $evento->deporte->imagen;
             $evento->save();
+
+            if ($request->participar) { // Añadir participante
+                $evento_usuarios = New EventoUsuarios();
+                $evento_usuarios->evento_id = $evento->id;
+                $evento_usuarios->user_id = $request->user_id ?? auth()->user()->id;
+                $evento_usuarios->save();
+            }
         } catch (Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
         }
