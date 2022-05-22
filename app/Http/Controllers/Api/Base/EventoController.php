@@ -47,10 +47,11 @@ class EventoController extends Controller
 
 
     public function store(Request $request){
-        $parameters = ["deporte_id", "fecha", "titulo", "descripcion", "direccion", "latitud", "longitud"];
+        $parameters = ["deporte_id", "fecha", "titulo", "descripcion", "direccion", "latitud", "longitud", "imagen"];
         try {
             $evento = New Evento();
             $evento->fill($request->only($parameters));
+            $evento->imagen = $request->imagen ?? $evento->deporte->imagen;
             $evento->save();
         } catch (Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);

@@ -44,7 +44,7 @@ class AdminDeporteController extends Controller
 
 
     public function store(Request $request){
-        $parameters = ["nombre", "max_participantes"];
+        $parameters = ["nombre", "max_participantes", "imagen"];
         try {
             $deporte = New Deporte();
             $deporte->fill($request->only($parameters));
@@ -57,7 +57,7 @@ class AdminDeporteController extends Controller
 
 
     public function update(Request $request, $id){
-        $parameters = ["nombre", "max_participantes"];
+        $parameters = ["nombre", "max_participantes", "imagen"];
         try {
             $deporte = Deporte::findOrFail($id);
             $deporte->fill($request->only($parameters));

@@ -13,7 +13,7 @@ class Deporte extends Model
     protected $guarded = ["id"];
 
     protected $fillable = [
-        "nombre", "max_participantes"
+        "nombre", "max_participantes", "imagen"
     ];
 
     public function eventos()

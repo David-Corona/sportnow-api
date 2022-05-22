@@ -14,7 +14,7 @@ class Evento extends Model
     protected $guarded = ["id"];
 
     protected $fillable = [
-        "deporte_id", "titulo", "descripcion", "fecha", "direccion", "latitud", "longitud"
+        "deporte_id", "titulo", "descripcion", "fecha", "direccion", "latitud", "longitud", "imagen"
     ];
 
 

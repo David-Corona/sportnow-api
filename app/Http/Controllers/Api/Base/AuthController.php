@@ -159,6 +159,11 @@ class AuthController extends Controller
         }
     }
 
+    public function validateAuth()
+    {
+        return auth()->check();
+    }
+
     protected function respondWithToken($token)
     {
         if(auth()->user()->activated !== 1) {

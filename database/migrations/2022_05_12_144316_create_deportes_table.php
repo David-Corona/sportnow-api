@@ -17,6 +17,7 @@ class CreateDeportesTable extends Migration
             $table->id();
             $table->string('nombre');
             $table->integer('max_participantes')->nullable();
+            $table->string('imagen');
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
         });

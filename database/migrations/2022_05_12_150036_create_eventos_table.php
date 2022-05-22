@@ -20,6 +20,7 @@ class CreateEventosTable extends Migration
             $table->integer('deporte_id');
             $table->string('titulo');
             $table->string('descripcion')->nullable();
+            $table->string('imagen')->nullable();
             $table->timestamp('fecha');
             $table->string('direccion');
             $table->double('latitud');

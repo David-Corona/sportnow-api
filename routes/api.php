@@ -24,6 +24,7 @@ Route::post("auth/login", [AuthController::class, 'login']);
 Route::post("auth/register", [AuthController::class, 'register']);
 Route::post('auth/forgot-password', [AuthController::class, 'forgotPassword']);
 Route::post('auth/reset-password', [AuthController::class, 'resetPassword']);
+Route::get('auth/validate', [AuthController::class, 'validateAuth']);
 
 Route::group(["middleware" => "role:user,admin"], function () {
 
