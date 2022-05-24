@@ -17,6 +17,15 @@ class Evento extends Model
         "deporte_id", "titulo", "descripcion", "fecha", "direccion", "latitud", "longitud", "imagen"
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+        static::deleting(function($model) {
+            $model->participantes()->delete();
+            $model->comentarios()->delete();
+        });
+    }
+
 
     public function deporte()
     {

@@ -51,7 +51,7 @@ Route::group(["middleware" => "role:user,admin"], function () {
 
     // EventoUsuarios
     Route::post('eventos-usuarios', [EventoUsuariosController::class, 'store']);
-    Route::delete('eventos-usuarios/{id}', [EventoUsuariosController::class, 'destroy']);
+    Route::delete('eventos-usuarios/{evento_id}/{user_id}', [EventoUsuariosController::class, 'destroy']);
 
     // EventoComentarios
     Route::get('eventos-comentarios', [EventoComentariosController::class, 'index']);

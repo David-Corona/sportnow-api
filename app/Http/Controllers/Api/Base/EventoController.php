@@ -39,7 +39,9 @@ class EventoController extends Controller
     public function show($id){
         try {
             $evento = Evento::with('deporte', 'participantes.usuario', 'comentarios.autor')->findOrFail($id);
-            $evento->distancia = $this->calcularDistancia($evento->latitud, $evento->longitud, auth()->user()->latitude, auth()->user()->longitude);
+            $userLogged = auth()->user();
+            $evento->distancia = $this->calcularDistancia($evento->latitud, $evento->longitud, $userLogged->latitude, $userLogged->longitude);
+            $evento->participo = EventoUsuarios::where('evento_id',$id)->where('user_id', $userLogged->id)->get()->isNotEmpty();
         } catch (Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
         }

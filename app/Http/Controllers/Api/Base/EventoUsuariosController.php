@@ -38,10 +38,18 @@ class EventoUsuariosController extends Controller
     }
 
 
-    public function destroy($id) {
+    public function destroy($evento_id, $user_id) {
         try {
-            $evento_usuarios = EventoUsuarios::findOrFail($id);
+            $evento = Evento::findOrFail($evento_id);
+            $usuario = $user_id ?? auth()->user()->id;
+            $evento_usuarios = EventoUsuarios::where('evento_id', $evento_id)->where('user_id', $usuario)->get()->first();
             $evento_usuarios->delete();
+
+            $participantes = $evento->participantes->count();
+            if ($participantes==0) {
+                $evento->delete();
+            }
+
         } catch (Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
         }

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Exception;
 
 class AuthController extends Controller
 {
@@ -161,7 +162,19 @@ class AuthController extends Controller
 
     public function validateAuth()
     {
-        return auth()->check();
+        //TODO
+
+
+        if (auth()->check()) {
+            return response()->json(['status' => 'success', 'message' => 'Autorizado'], 200);
+        } else {
+            // return response()->json(['status' => 'error', 'message' => 'No autorizado'], 401);
+            // return false;
+            throw new Exception("No autorizado");
+        }
+
+
+        // return auth()->check();
     }
 
     protected function respondWithToken($token)
