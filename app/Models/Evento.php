@@ -43,7 +43,7 @@ class Evento extends Model
     }
 
 
-    public function scopeFilter($query)
+    public function scopeFilter($query, $request)
     {
         if (request('deporte_id')) { //TODO: quizá quiera filtrar por el nombre?
             $query->where('deporte_id', request('deporte_id'));
@@ -51,6 +51,12 @@ class Evento extends Model
         if (request('direccion')) {
             $query->where('direccion', 'like', '%'.request('direccion').'%');
         }
+        // if(request('futuro')) {
+        //     $query->where('fecha' , '>=' , Carbon::now('Europe/Madrid')->toDateTimeString());
+        // }
+        // if(request('pasado')) {
+        //     $query->where('fecha' , '<' , Carbon::now('Europe/Madrid')->toDateTimeString());
+        // }
         if (request('fecha_inicio') && !request('fecha_fin')) {
             $query->whereDate('fecha', '>=', request('fecha_inicio'));
         }
@@ -60,6 +66,11 @@ class Evento extends Model
         else if (request('fecha_inicio') && request('fecha_fin')) {
             $query->whereDate('fecha', '>=', request('fecha_inicio'))
             ->whereDate('fecha', '<=', request('fecha_fin'));
+        }
+        if(request('user_id')) {
+            $query->whereHas('participantes', function($q) use ($request){
+                $q->where('user_id', '=', $request->user_id);
+            });
         }
         return $query;
     }

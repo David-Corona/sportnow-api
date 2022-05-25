@@ -46,12 +46,14 @@ Route::group(["middleware" => "role:user,admin"], function () {
     Route::get('eventos', [EventoController::class, 'index']);
     Route::get('eventos/{id}', [EventoController::class, 'show']);
     Route::post('eventos', [EventoController::class, 'store']);
+    Route::get('eventos-historial', [EventoController::class, 'historial']);
     // Route::put('eventos/{id}', [EventoController::class, 'update']);
     // Route::delete('eventos/{id}', [EventoController::class, 'destroy']);
 
     // EventoUsuarios
+    Route::get('eventos-usuarios', [EventoUsuariosController::class, 'index']);
     Route::post('eventos-usuarios', [EventoUsuariosController::class, 'store']);
-    Route::delete('eventos-usuarios/{evento_id}/{user_id}', [EventoUsuariosController::class, 'destroy']);
+    Route::delete('eventos-usuarios/{evento_id}/{user_id?}', [EventoUsuariosController::class, 'destroy']);
 
     // EventoComentarios
     Route::get('eventos-comentarios', [EventoComentariosController::class, 'index']);
@@ -74,7 +76,7 @@ Route::group(["middleware" => "role:admin"], function () {
         Route::apiResource('eventos', AdminEventoController::class);
 
         // AdminEventoUsuarios
-        Route::get('eventos-usuarios', [AdminEventoUsuariosController::class, 'index']);
+
 
         // AdminEventoComentarios
         Route::apiResource('eventos-comentarios', AdminEventoComentariosController::class);

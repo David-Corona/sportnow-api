@@ -11,16 +11,19 @@ use Exception;
 class EventoController extends Controller
 {
     //TODO: filtro distancia en index, ejemplo: partidos radio 50km
-    //TODO: paginacion, orden
+    //TODO: paginacion, orden - Index+historial
 
     public function index(Request $request){
         try {
             $eventos = Evento::with('deporte', 'participantes', 'comentarios')
             ->whereNull('deleted_at')
-            ->filter()
+            ->where('fecha' , '>=' , Carbon::now('Europe/Madrid')->toDateTimeString())
+            ->filter($request)
             ->orderBy('fecha','ASC')
             // ->paginate(20)
             ->get();
+
+
 
             // if(isset($request->page)) {
             //     $languages = Deporte::whereNull('deleted_at')->orderBy('fecha', 'asc')->paginate(15);
@@ -34,6 +37,21 @@ class EventoController extends Controller
         }
         return response()->json(['status' => 'success', 'data' => $eventos], 200);
     }
+
+    public function historial(Request $request){
+        try {
+            $eventos = Evento::with('deporte', 'participantes')
+            ->whereNull('deleted_at')
+            ->where('fecha' , '<' , Carbon::now('Europe/Madrid')->toDateTimeString())
+            ->filter($request)
+            ->orderBy('fecha','ASC')
+            ->get();
+        } catch (Exception $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
+        }
+        return response()->json(['status' => 'success', 'data' => $eventos], 200);
+    }
+
 
 
     public function show($id){

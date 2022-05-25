@@ -17,7 +17,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         try{
-            $users = User::where('deleted_at', null)->orderBy('name','ASC')->get();
+            $users = User::where('deleted_at', null)->filter()->orderBy('name','ASC')->get();
             return response()->json(['status' => 'success', 'data' => $users], 200);
         } catch (Exception $e) {
             return response()->json(['status' => 'error', 'item' => null, 'message' => $e->getMessage()]);
