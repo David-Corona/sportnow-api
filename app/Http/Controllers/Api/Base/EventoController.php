@@ -52,6 +52,21 @@ class EventoController extends Controller
         return response()->json(['status' => 'success', 'data' => $eventos], 200);
     }
 
+    public function proximas(Request $request){
+        try {
+            $eventos = Evento::with('deporte', 'participantes')
+            ->whereNull('deleted_at')
+            ->where('fecha' , '>=' , Carbon::now('Europe/Madrid')->toDateTimeString())
+            ->filter($request)
+            ->orderBy('fecha','ASC')
+            ->limit(5)
+            ->get();
+        } catch (Exception $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
+        }
+        return response()->json(['status' => 'success', 'data' => $eventos], 200);
+    }
+
 
 
     public function show($id){

@@ -14,7 +14,7 @@ class Evento extends Model
     protected $guarded = ["id"];
 
     protected $fillable = [
-        "deporte_id", "titulo", "descripcion", "fecha", "direccion", "latitud", "longitud", "imagen"
+        "deporte_id", "titulo", "descripcion", "fecha", "direccion", "latitud", "longitud"
     ];
 
     protected static function boot()
@@ -48,14 +48,11 @@ class Evento extends Model
         if (request('deporte_id')) { //TODO: quizá quiera filtrar por el nombre?
             $query->where('deporte_id', request('deporte_id'));
         }
-        if (request('direccion')) {
-            $query->where('direccion', 'like', '%'.request('direccion').'%');
+        if (request('titulo')) {
+            $query->where('titulo', 'like', '%'.request('titulo').'%');
         }
-        // if(request('futuro')) {
-        //     $query->where('fecha' , '>=' , Carbon::now('Europe/Madrid')->toDateTimeString());
-        // }
-        // if(request('pasado')) {
-        //     $query->where('fecha' , '<' , Carbon::now('Europe/Madrid')->toDateTimeString());
+        // if (request('direccion')) {
+        //     $query->where('direccion', 'like', '%'.request('direccion').'%');
         // }
         if (request('fecha_inicio') && !request('fecha_fin')) {
             $query->whereDate('fecha', '>=', request('fecha_inicio'));

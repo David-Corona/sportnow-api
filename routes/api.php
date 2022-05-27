@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\Base\UserController;
 use App\Http\Controllers\Api\Base\EventoController;
 use App\Http\Controllers\Api\Base\EventoUsuariosController;
 use App\Http\Controllers\Api\Base\EventoComentariosController;
+use App\Http\Controllers\Api\Base\ContactoController;
 
 // Admin
 use App\Http\Controllers\Api\Admin\AdminUserController;
@@ -17,6 +18,7 @@ use App\Http\Controllers\Api\Admin\AdminDeporteController;
 use App\Http\Controllers\Api\Admin\AdminEventoController;
 use App\Http\Controllers\Api\Admin\AdminEventoUsuariosController;
 use App\Http\Controllers\Api\Admin\AdminEventoComentariosController;
+use App\Http\Controllers\Api\Admin\AdminContactoController;
 
 
 // Auth
@@ -47,6 +49,7 @@ Route::group(["middleware" => "role:user,admin"], function () {
     Route::get('eventos/{id}', [EventoController::class, 'show']);
     Route::post('eventos', [EventoController::class, 'store']);
     Route::get('eventos-historial', [EventoController::class, 'historial']);
+    Route::get('eventos-proximas', [EventoController::class, 'proximas']);
     // Route::put('eventos/{id}', [EventoController::class, 'update']);
     // Route::delete('eventos/{id}', [EventoController::class, 'destroy']);
 
@@ -59,6 +62,8 @@ Route::group(["middleware" => "role:user,admin"], function () {
     Route::get('eventos-comentarios', [EventoComentariosController::class, 'index']);
     Route::post('eventos-comentarios', [EventoComentariosController::class, 'store']);
 
+    //Contacto
+    Route::post('contacto', [ContactoController::class, 'store']);
 
 });
 
@@ -83,6 +88,10 @@ Route::group(["middleware" => "role:admin"], function () {
         // Route::get('eventos-comentarios/{id}', [AdminEventoComentariosController::class, 'show']);
         // Route::put('eventos-comentarios/{id}', [AdminEventoComentariosController::class, 'update']);
         // Route::delete('eventos-comentarios/{id}', [AdminEventoComentariosController::class, 'destroy']);
+
+        // AdminContacto
+        // Route::get('contacto', [AdminContactoController::class, 'index']);
+        // Route::apiResource('contacto', AdminContactoController::class);
 
     });
 

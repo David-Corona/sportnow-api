@@ -22,7 +22,6 @@ class EventoSeeder extends Seeder
             'direccion' => 'Club Pádel La Nucia',
             'latitud' => 38.602013,
             'longitud' => -0.121925,
-            // 'imagen' => TODO
         ]);
         DB::table('eventos')->insert([
             'deporte_id' => 1,
