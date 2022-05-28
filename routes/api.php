@@ -76,12 +76,18 @@ Route::group(["middleware" => "role:admin"], function () {
 
         // AdminDeporte
         Route::apiResource('deportes', AdminDeporteController::class);
+        Route::get('deportes-populares', [AdminDeporteController::class, 'masPopular']);
 
         // AdminEvento
         Route::apiResource('eventos', AdminEventoController::class);
+        Route::get('eventos-ultimos', [AdminEventoController::class, 'ultimosCreados']);
+
 
         // AdminEventoUsuarios
+        Route::get('eventos-usuarios', [AdminEventoUsuariosController::class, 'index']);
+        Route::get('eventos-usuarios-activos', [AdminEventoUsuariosController::class, 'masActivos']);
 
+        // Route::apiResource('eventos-usuarios', AdminEventoUsuariosController::class);
 
         // AdminEventoComentarios
         Route::apiResource('eventos-comentarios', AdminEventoComentariosController::class);
@@ -92,6 +98,7 @@ Route::group(["middleware" => "role:admin"], function () {
         // AdminContacto
         Route::get('contacto', [AdminContactoController::class, 'index']);
         Route::get('contacto/{id}', [AdminContactoController::class, 'show']);
+        Route::get('contacto-ultimos', [AdminContactoController::class, 'ultimosMensajes']);
         // Route::apiResource('contacto', AdminContactoController::class);
 
     });

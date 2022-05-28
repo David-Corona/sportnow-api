@@ -46,6 +46,19 @@ class AdminContactoController extends ContactoController
         }
     }
 
+    public function ultimosMensajes(Request $request){
+        try {
+            $mensajes = Contacto::with('autor')
+            ->whereNull('deleted_at')
+            ->orderBy('created_at','ASC')
+            ->limit(5)
+            ->get();
+        } catch (Exception $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
+        }
+        return response()->json(['status' => 'success', 'data' => $mensajes], 200);
+    }
+
 
 
 }

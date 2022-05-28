@@ -53,20 +53,20 @@ class EventoController extends Controller
     }
 
     public function proximas(Request $request){
+        $limit = $request->limite ?? 5;
         try {
             $eventos = Evento::with('deporte', 'participantes')
             ->whereNull('deleted_at')
             ->where('fecha' , '>=' , Carbon::now('Europe/Madrid')->toDateTimeString())
             ->filter($request)
             ->orderBy('fecha','ASC')
-            ->limit(5)
+            ->limit($limit)
             ->get();
         } catch (Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
         }
         return response()->json(['status' => 'success', 'data' => $eventos], 200);
     }
-
 
 
     public function show($id){
@@ -83,11 +83,10 @@ class EventoController extends Controller
 
 
     public function store(Request $request){
-        $parameters = ["deporte_id", "fecha", "titulo", "descripcion", "direccion", "latitud", "longitud", "imagen"];
+        $parameters = ["deporte_id", "fecha", "titulo", "descripcion", "direccion", "latitud", "longitud"];
         try {
             $evento = New Evento();
             $evento->fill($request->only($parameters));
-            $evento->imagen = $request->imagen ?? $evento->deporte->imagen;
             $evento->save();
 
             if ($request->participar) { // Añadir participante

@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Base\EventoController;
 use App\Models\Evento;
 use Illuminate\Http\Request;
 use Exception;
+use Carbon\Carbon;
 
 class AdminEventoController extends EventoController
 {
@@ -31,6 +32,20 @@ class AdminEventoController extends EventoController
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
         }
         return response()->json(['status' => 'success'], 200);
+    }
+
+    public function ultimosCreados(Request $request){
+        $limit = $request->limite ?? 5;
+        try {
+            $eventos = Evento::with('deporte', 'participantes')
+            ->whereNull('deleted_at')
+            ->orderBy('created_at','ASC')
+            ->limit($limit)
+            ->get();
+        } catch (Exception $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
+        }
+        return response()->json(['status' => 'success', 'data' => $eventos], 200);
     }
 
 

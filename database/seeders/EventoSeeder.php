@@ -22,6 +22,7 @@ class EventoSeeder extends Seeder
             'direccion' => 'Club Pádel La Nucia',
             'latitud' => 38.602013,
             'longitud' => -0.121925,
+            'created_at' => '2022-06-17 10:39:58'
         ]);
         DB::table('eventos')->insert([
             'deporte_id' => 1,
@@ -31,6 +32,7 @@ class EventoSeeder extends Seeder
             'direccion' => 'Club Pádel La Nucia',
             'latitud' => 38.602013,
             'longitud' => -0.121925,
+            'created_at' => '2022-06-18 11:32:58'
         ]);
         DB::table('eventos')->insert([
             'deporte_id' => 3,
@@ -40,6 +42,7 @@ class EventoSeeder extends Seeder
             'direccion' => 'Ruta del Faro, Albir',
             'latitud' => 38.567910,
             'longitud' => -0.062958,
+            'created_at' => '2022-06-15 10:37:58'
         ]);
     }
 }
