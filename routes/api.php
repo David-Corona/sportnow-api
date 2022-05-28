@@ -90,7 +90,8 @@ Route::group(["middleware" => "role:admin"], function () {
         // Route::delete('eventos-comentarios/{id}', [AdminEventoComentariosController::class, 'destroy']);
 
         // AdminContacto
-        // Route::get('contacto', [AdminContactoController::class, 'index']);
+        Route::get('contacto', [AdminContactoController::class, 'index']);
+        Route::get('contacto/{id}', [AdminContactoController::class, 'show']);
         // Route::apiResource('contacto', AdminContactoController::class);
 
     });
