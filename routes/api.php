@@ -108,4 +108,7 @@ Route::group(["middleware" => "role:admin"], function () {
 
 
 
-
+// TODO: quitar
+// Route::get('test', function () {
+//     return response()->json(['status' => 'success', 'message' => 'Funciona!'], 200);
+// })->name('test');

@@ -75,6 +75,10 @@ class EventoController extends Controller
             $userLogged = auth()->user();
             $evento->distancia = $this->calcularDistancia($evento->latitud, $evento->longitud, $userLogged->latitude, $userLogged->longitude);
             $evento->participo = EventoUsuarios::where('evento_id',$id)->where('user_id', $userLogged->id)->get()->isNotEmpty();
+
+            $max_participantes = $evento->deporte->max_participantes ?? 1000;
+            $numParticipantes = $evento->participantes->count();
+            $evento->lleno = $numParticipantes < $max_participantes ? false : true;
         } catch (Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
         }
