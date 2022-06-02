@@ -45,15 +45,12 @@ class Evento extends Model
 
     public function scopeFilter($query, $request)
     {
-        if (request('deporte_id')) { //TODO: quizá quiera filtrar por el nombre?
+        if (request('deporte_id')) {
             $query->where('deporte_id', request('deporte_id'));
         }
         if (request('titulo')) {
             $query->where('titulo', 'like', '%'.request('titulo').'%');
         }
-        // if (request('direccion')) {
-        //     $query->where('direccion', 'like', '%'.request('direccion').'%');
-        // }
         if (request('fecha_inicio') && !request('fecha_fin')) {
             $query->whereDate('fecha', '>=', request('fecha_inicio'));
         }

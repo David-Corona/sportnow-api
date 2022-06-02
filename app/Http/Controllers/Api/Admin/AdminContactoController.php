@@ -46,7 +46,7 @@ class AdminContactoController extends ContactoController
         }
     }
 
-    public function ultimosMensajes(Request $request){
+    public function ultimosMensajes(){
         try {
             $mensajes = Contacto::with('autor')
             ->whereNull('deleted_at')

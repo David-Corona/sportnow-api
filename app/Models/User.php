@@ -67,23 +67,6 @@ class User extends Authenticatable implements JWTSubject
         if (request('activo')) {
             $query->where('activated', request('activo'));
         }
-
-        // if (request('fecha_inicio') && !request('fecha_fin')) {
-        //     $query->whereDate('fecha', '>=', request('fecha_inicio'));
-        // }
-        // else if (!request('fecha_inicio') && request('fecha_fin')) {
-        //     $query->whereDate('fecha', '<=', request('fecha_fin'));
-        // }
-        // else if (request('fecha_inicio') && request('fecha_fin')) {
-        //     $query->whereDate('fecha', '>=', request('fecha_inicio'))
-        //     ->whereDate('fecha', '<=', request('fecha_fin'));
-        // }
-
-        // if(request('user_id')) {
-        //     $query->whereHas('participantes', function($q) use ($request){
-        //         $q->where('user_id', '=', $request->user_id);
-        //     });
-        // }
         return $query;
     }
 }
