@@ -48,7 +48,7 @@ class EventoComentariosSeeder extends Seeder
             'evento_id' => 3,
             'user_id' => 4,
             'created_at' => '2022-06-05 21:44:58',
-            'mensaje' => 'Hola Eustaquio, es una ruta muy sencilla y el camino es asfaltado',
+            'mensaje' => 'Hola Eustaquio, es una ruta bastante corta y el camino es asfaltado, pero tiene subidas y bajadas',
         ]);
         DB::table('evento_comentarios')->insert([
             'evento_id' => 3,

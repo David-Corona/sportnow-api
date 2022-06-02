@@ -14,30 +14,29 @@ class DeporteSeeder extends Seeder
      */
     public function run()
     {
-        // TODO
+        // TODO?
         DB::table('deportes')->insert([
-            'nombre' => 'Padel',
-            'max_participantes' => 4,
-            'imagen' => 'imagenPadel' //TODO
+            'nombre' => 'Baloncesto',
+            'max_participantes' => 10,
+            'imagen' => 'https://i.ibb.co/W3zt49v/dep-basket.jpg'
         ]);
         DB::table('deportes')->insert([
-            'nombre' => 'Tenis',
-            'max_participantes' => 2,
-            'imagen' => 'imagenTenis'
-        ]);
-        DB::table('deportes')->insert([
-            'nombre' => 'Senderismo',
-            'imagen' => 'imagenSenderismo'
+            'nombre' => 'Ciclismo',
+            'imagen' => 'https://i.ibb.co/G3KYyGR/ciclismo-dep.jpg'
         ]);
         DB::table('deportes')->insert([
             'nombre' => 'Fútbol Sala',
             'max_participantes' => 10,
-            'imagen' => 'imagenSenderismo'
+            'imagen' => 'https://i.ibb.co/ZdZThG6/dep-futbol.png'
         ]);
         DB::table('deportes')->insert([
-            'nombre' => 'Baloncesto',
-            'max_participantes' => 10,
-            'imagen' => 'imagenSenderismo'
+            'nombre' => 'Padel',
+            'max_participantes' => 4,
+            'imagen' => 'https://i.ibb.co/1znz6yX/dep-tenis.jpg'
+        ]);
+        DB::table('deportes')->insert([
+            'nombre' => 'Running',
+            'imagen' => 'https://i.ibb.co/bFpDST1/run-dep.jpg'
         ]);
     }
 }

@@ -179,7 +179,7 @@ class AuthController extends Controller
 
     protected function respondWithToken($token)
     {
-        if(auth()->user()->activated !== 1) {
+        if(!auth()->user()->activated) {
             return response()->json(['error' => 'Desactivado', 'message' => 'Su cuenta está desactivada.'], 403);
         } else {
             return response()->json([
