@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Exception;
 
+use function PHPSTORM_META\map;
+
 class EventoController extends Controller
 {
     //TODO: filtro distancia en index, ejemplo: partidos radio 50km
@@ -18,11 +20,38 @@ class EventoController extends Controller
             $eventos = Evento::with('deporte', 'participantes', 'comentarios')
             ->whereNull('deleted_at')
             ->where('fecha' , '>=' , Carbon::now('Europe/Madrid')->toDateTimeString())
+            // ->whereHas('participantes', function($q) use ($request){
+            //     $q->where(participantes->count(), '=', $request->user_id);
+            // })
             ->filter($request)
             ->orderBy('fecha','ASC')
             // ->paginate(20)
             ->get();
 
+            // $eventos->distancia = 0;
+            $userLogged = auth()->user();
+            foreach ($eventos as $evento) {
+                $evento->distancia = $this->calcularDistancia($evento->latitud, $evento->longitud, $userLogged->latitude, $userLogged->longitude);
+            };
+
+
+            // TODO: Mostrar sólo eventos con plazas Y filtrar por distancia si se pasa
+
+        // if(request('user_id')) {
+        //     $query->whereHas('participantes', function($q) use ($request){
+        //         $q->where('user_id', '=', $request->user_id);
+        //     });
+        // }
+
+            // $max_participantes = $evento->deporte->max_participantes ?? 1000;
+            // $numParticipantes = $evento->participantes->count();
+            // if ($numParticipantes = $max_participantes) {
+
+
+
+            // if(isset($request->distancia)) {
+            //     $eventos = Evento::where($eventos->distancia, '<=', $request->distancia)->get();
+            // }
 
 
             // if(isset($request->page)) {
