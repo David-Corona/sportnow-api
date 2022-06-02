@@ -56,11 +56,17 @@ class User extends Authenticatable implements JWTSubject
     public function scopeFilter($query)
     {
         if (request('name')) {
-            $query->where('name','like', '%'.request('name').'%');
+            $query->where('name','ilike', '%'.request('name').'%');
         }
-        // if (request('direccion')) {
-        //     $query->where('direccion', 'like', '%'.request('direccion').'%');
-        // }
+        if (request('email')) {
+            $query->where('email','ilike', '%'.request('email').'%');
+        }
+        if (request('role')) {
+            $query->where('role', request('role'));
+        }
+        if (request('activo')) {
+            $query->where('activated', request('activo'));
+        }
 
         // if (request('fecha_inicio') && !request('fecha_fin')) {
         //     $query->whereDate('fecha', '>=', request('fecha_inicio'));

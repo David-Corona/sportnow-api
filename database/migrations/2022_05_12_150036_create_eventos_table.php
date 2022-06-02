@@ -18,7 +18,7 @@ class CreateEventosTable extends Migration
             // $table->foreignId('deporte_id')->constrained('deportes')->onDelete('cascade'); //TODO
             $table->integer('deporte_id');
             $table->string('titulo');
-            $table->string('descripcion')->nullable();
+            $table->text('descripcion')->nullable();
             $table->timestamp('fecha');
             $table->string('direccion');
             $table->double('latitud');

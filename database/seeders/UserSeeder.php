@@ -95,5 +95,15 @@ class UserSeeder extends Seeder
             'longitude' => 0.034,
             'activated' => true,
         ]);
+        DB::table('users')->insert([
+            'name' => 'Johnny Vegas',
+            'email' => 'johnny@gmail.com',
+            'password' => Hash::make('123456'),
+            'role' => 'user',
+            'avatar' => 'https://i.ibb.co/3hNxtHH/default-avatar.jpg',
+            'latitude' => 37.98,
+            'longitude' => -0.024,
+            'activated' => true,
+        ]);
     }
 }

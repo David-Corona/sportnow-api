@@ -39,7 +39,7 @@ class AdminEventoController extends EventoController
         try {
             $eventos = Evento::with('deporte', 'participantes')
             ->whereNull('deleted_at')
-            ->orderBy('created_at','ASC')
+            ->orderBy('created_at','DESC')
             ->limit($limit)
             ->get();
         } catch (Exception $e) {

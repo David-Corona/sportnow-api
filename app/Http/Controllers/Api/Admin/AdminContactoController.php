@@ -50,7 +50,7 @@ class AdminContactoController extends ContactoController
         try {
             $mensajes = Contacto::with('autor')
             ->whereNull('deleted_at')
-            ->orderBy('created_at','ASC')
+            ->orderBy('created_at','DESC')
             ->limit(5)
             ->get();
         } catch (Exception $e) {
