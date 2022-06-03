@@ -7,6 +7,13 @@ use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
 
+use App\Events\CrearEvento;
+use App\Events\NuevoContacto;
+use App\Events\NuevoUsuario;
+use App\Listeners\CrearEventoListener;
+use App\Listeners\NuevoContactoListener;
+use App\Listeners\NuevoUsuarioListener;
+
 class EventServiceProvider extends ServiceProvider
 {
     /**
@@ -18,6 +25,17 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        CrearEvento::class => [
+            CrearEventoListener::class
+        ],
+        NuevoContacto::class => [
+            NuevoContactoListener::class
+        ],
+        NuevoUsuario::class => [
+            NuevoUsuarioListener::class
+        ],
+
+
     ];
 
     /**

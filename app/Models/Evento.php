@@ -42,6 +42,11 @@ class Evento extends Model
         return $this->hasMany(EventoUsuarios::class, 'evento_id','id');
     }
 
+    public function log()
+    {
+        return $this->morphMany(Log::class, 'logable');
+    }
+
 
     public function scopeFilter($query, $request)
     {

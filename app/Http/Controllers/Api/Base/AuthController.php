@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Base;
 
+use App\Events\NuevoUsuario;
 use App\Models\User;
 use App\Models\PasswordResets;
 use App\Notifications\PasswordReset;
@@ -74,24 +75,9 @@ class AuthController extends Controller
         $user->role = 'user';
         $user->activated = true;
         $user->avatar = 'https://i.ibb.co/3hNxtHH/default-avatar.jpg';
-
-        // $user->avatar = isset($request->avatar) ? $request->avatar : '/images/default-avatar.jpg';
-        // if($request->hasFile('avatar')) {
-        //     $nombreFichero = $request->file('avatar')->getClientOriginalName(); // "Nombre Imagen.jpg"
-        //     $nombreAvatar = pathinfo($nombreFichero, PATHINFO_FILENAME); // "Nombre Imagen"
-        //     $extension = $request->file('avatar')->getClientOriginalExtension(); //"jpg"
-        //     $nuevoNombre = '/uploads/'.str_replace(' ', '_', $nombreAvatar).'-'.date('YmdHis').'.'.$extension; //"Nombre_Imagen-20220508115359.jpg"
-
-        //     // $path = $request->file('avatar')->storeAs(public_path().'/uploads', $nuevoNombre, 'public');
-        //     $request->file('avatar')->move(public_path('uploads'), $nuevoNombre); //guarda en public/uploads
-
-        //     $user->avatar = $nuevoNombre;
-        // } else {
-        //     $user->avatar = '/images/default-avatar.jpg';
-        // }
-
         $user->save();
 
+        event(new NuevoUsuario($user));
         return response()->json(['status' => 'success'], 200);
     }
 

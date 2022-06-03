@@ -50,6 +50,16 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Contacto::class, 'user_id', 'id');
     }
 
+    public function logs()
+    {
+        return $this->hasMany(Log::class, 'user_id', 'id');
+    }
+
+    public function log()
+    {
+        return $this->morphMany(Log::class, 'logable');
+    }
+
 
     public function getJWTIdentifier()
     {

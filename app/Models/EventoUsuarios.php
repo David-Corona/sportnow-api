@@ -25,6 +25,11 @@ class EventoUsuarios extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
+    public function log()
+    {
+        return $this->morphMany(Log::class, 'logable');
+    }
+
 
     public function scopeFilter($query)
     {

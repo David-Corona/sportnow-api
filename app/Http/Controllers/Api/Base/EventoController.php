@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Base;
 
+use App\Events\CrearEvento;
 use App\Models\Evento;
 use App\Models\EventoUsuarios;
 use Illuminate\Http\Request;
@@ -132,6 +133,7 @@ class EventoController extends Controller
         } catch (Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
         }
+        event(new CrearEvento($evento));
         return response()->json(['status' => 'success', 'data' =>  $evento], 200);
     }
 
