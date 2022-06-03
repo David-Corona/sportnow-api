@@ -72,8 +72,8 @@ class AuthController extends Controller
         $user->latitude =  $request->latitude;
         $user->longitude = $request->longitude;
         $user->role = 'user';
-        $user->activated = false;
-        $user->avatar = '/images/default-avatar.jpg';
+        $user->activated = true;
+        $user->avatar = 'https://i.ibb.co/3hNxtHH/default-avatar.jpg';
 
         // $user->avatar = isset($request->avatar) ? $request->avatar : '/images/default-avatar.jpg';
         // if($request->hasFile('avatar')) {
@@ -160,22 +160,22 @@ class AuthController extends Controller
         }
     }
 
-    public function validateAuth()
-    {
-        //TODO
+    // public function validateAuth()
+    // {
+    //     //TODO
 
 
-        if (auth()->check()) {
-            return response()->json(['status' => 'success', 'message' => 'Autorizado'], 200);
-        } else {
-            // return response()->json(['status' => 'error', 'message' => 'No autorizado'], 401);
-            // return false;
-            throw new Exception("No autorizado");
-        }
+    //     if (auth()->check()) {
+    //         return response()->json(['status' => 'success', 'message' => 'Autorizado'], 200);
+    //     } else {
+    //         // return response()->json(['status' => 'error', 'message' => 'No autorizado'], 401);
+    //         // return false;
+    //         throw new Exception("No autorizado");
+    //     }
 
 
-        // return auth()->check();
-    }
+    //     // return auth()->check();
+    // }
 
     protected function respondWithToken($token)
     {

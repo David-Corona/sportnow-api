@@ -10,12 +10,9 @@ use Exception;
 
 class EventoUsuariosController extends Controller
 {
-    // Store: apuntarse a partido
-    // Delete: desapuntarse
-
 
         //TODO: paginacion para el listado admin, orden?
-    //TODO: mas filtros? se puede por prop del with
+
 
     public function index(Request $request){
         try {

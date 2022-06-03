@@ -1,8 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
 
 // Base
 use App\Http\Controllers\Api\Base\AuthController;
@@ -21,13 +19,14 @@ use App\Http\Controllers\Api\Admin\AdminEventoComentariosController;
 use App\Http\Controllers\Api\Admin\AdminContactoController;
 
 
-// Auth
+// Sección Externa - Auth
 Route::post("auth/login", [AuthController::class, 'login']);
 Route::post("auth/register", [AuthController::class, 'register']);
 Route::post('auth/forgot-password', [AuthController::class, 'forgotPassword']);
 Route::post('auth/reset-password', [AuthController::class, 'resetPassword']);
-Route::get('auth/validate', [AuthController::class, 'validateAuth']);
+// Route::get('auth/validate', [AuthController::class, 'validateAuth']);
 
+// Sección Interna
 Route::group(["middleware" => "role:user,admin"], function () {
 
     // Auth
@@ -64,9 +63,9 @@ Route::group(["middleware" => "role:user,admin"], function () {
 
     //Contacto
     Route::post('contacto', [ContactoController::class, 'store']);
-
 });
 
+// Sección Administración
 Route::group(["middleware" => "role:admin"], function () {
     Route::prefix('admin')->group(function () {
 
@@ -82,11 +81,9 @@ Route::group(["middleware" => "role:admin"], function () {
         Route::apiResource('eventos', AdminEventoController::class);
         Route::get('eventos-ultimos', [AdminEventoController::class, 'ultimosCreados']);
 
-
         // AdminEventoUsuarios
         Route::get('eventos-usuarios', [AdminEventoUsuariosController::class, 'index']);
         Route::get('eventos-usuarios-activos', [AdminEventoUsuariosController::class, 'masActivos']);
-
         // Route::apiResource('eventos-usuarios', AdminEventoUsuariosController::class);
 
         // AdminEventoComentarios
@@ -104,5 +101,4 @@ Route::group(["middleware" => "role:admin"], function () {
     });
 
 });
-
 

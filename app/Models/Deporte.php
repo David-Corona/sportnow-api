@@ -16,6 +16,14 @@ class Deporte extends Model
         "nombre", "max_participantes", "imagen"
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+        static::deleting(function($model) {
+            $model->eventos()->delete();
+        });
+    }
+
     public function eventos()
     {
         return $this->hasMany(Evento::class, 'deporte_id', 'id');

@@ -28,10 +28,10 @@ class EventoComentarios extends Model
 
     public function scopeFilter($query)
     {
-        if (request('evento_id')) { //TODO: quizá quiera filtrar por el nombre?
+        if (request('evento_id')) {
             $query->where('evento_id', request('evento_id'));
         }
-        if (request('user_id')) { //TODO: quizá quiera filtrar por el nombre?
+        if (request('user_id')) {
             $query->where('user_id', request('user_id'));
         }
         if (request('mensaje')) {

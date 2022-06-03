@@ -26,7 +26,7 @@ class Contacto extends Model
 
     public function scopeFilter($query)
     {
-        if (request('user_id')) { //TODO: quizá quiera filtrar por el nombre?
+        if (request('user_id')) {
             $query->where('user_id', request('user_id'));
         }
         if (request('mensaje')) {

@@ -26,6 +26,14 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+        static::deleting(function($model) {
+            $model->participantes()->delete();
+        });
+    }
+
 
     public function comentarios()
     {
