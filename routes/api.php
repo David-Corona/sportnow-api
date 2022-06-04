@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\Admin\AdminEventoController;
 use App\Http\Controllers\Api\Admin\AdminEventoUsuariosController;
 use App\Http\Controllers\Api\Admin\AdminEventoComentariosController;
 use App\Http\Controllers\Api\Admin\AdminContactoController;
+use App\Http\Controllers\Api\Admin\AdminLogsController;
 
 
 // Sección Externa - Auth
@@ -97,6 +98,9 @@ Route::group(["middleware" => "role:admin"], function () {
         Route::get('contacto/{id}', [AdminContactoController::class, 'show']);
         Route::get('contacto-ultimos', [AdminContactoController::class, 'ultimosMensajes']);
         // Route::apiResource('contacto', AdminContactoController::class);
+
+        // AdminLogsController
+        Route::get('logs', [AdminLogsController::class, 'index']);
 
     });
 

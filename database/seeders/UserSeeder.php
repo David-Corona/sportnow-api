@@ -26,6 +26,16 @@ class UserSeeder extends Seeder
             'activated' => true,
         ]);
         DB::table('users')->insert([
+            'name' => 'admin',
+            'email' => 'admin@admin.com',
+            'password' => Hash::make('123456'),
+            'role' => 'admin',
+            'avatar' => 'https://i.ibb.co/3hNxtHH/default-avatar.jpg',
+            'latitude' => 39.0,
+            'longitude' => 0.005,
+            'activated' => true,
+        ]);
+        DB::table('users')->insert([
             'name' => 'David User',
             'email' => 'corona_121@hotmail.com',
             'password' => Hash::make('123456'),
