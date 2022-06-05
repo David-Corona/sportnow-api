@@ -13,54 +13,20 @@ use function PHPSTORM_META\map;
 
 class EventoController extends Controller
 {
-    //TODO: filtro distancia en index, ejemplo: partidos radio 50km
-    //TODO: paginacion, orden - Index+historial
 
     public function index(Request $request){
         try {
             $eventos = Evento::with('deporte', 'participantes', 'comentarios')
             ->whereNull('deleted_at')
             ->where('fecha' , '>=' , Carbon::now('Europe/Madrid')->toDateTimeString())
-            // ->whereHas('participantes', function($q) use ($request){
-            //     $q->where(participantes->count(), '=', $request->user_id);
-            // })
             ->filter($request)
             ->orderBy('fecha','ASC')
-            // ->paginate(20)
             ->get();
 
-            // $eventos->distancia = 0;
             $userLogged = auth()->user();
             foreach ($eventos as $evento) {
                 $evento->distancia = $this->calcularDistancia($evento->latitud, $evento->longitud, $userLogged->latitude, $userLogged->longitude);
             };
-
-
-            // TODO: Mostrar sólo eventos con plazas Y filtrar por distancia si se pasa
-
-        // if(request('user_id')) {
-        //     $query->whereHas('participantes', function($q) use ($request){
-        //         $q->where('user_id', '=', $request->user_id);
-        //     });
-        // }
-
-            // $max_participantes = $evento->deporte->max_participantes ?? 1000;
-            // $numParticipantes = $evento->participantes->count();
-            // if ($numParticipantes = $max_participantes) {
-
-
-
-            // if(isset($request->distancia)) {
-            //     $eventos = Evento::where($eventos->distancia, '<=', $request->distancia)->get();
-            // }
-
-
-            // if(isset($request->page)) {
-            //     $languages = Deporte::whereNull('deleted_at')->orderBy('fecha', 'asc')->paginate(15);
-            // } else {
-            //     $languages = Deporte::whereNull('deleted_at')->orderBy('fecha', 'asc')->get();
-            // }
-
 
         } catch (Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
@@ -138,8 +104,7 @@ class EventoController extends Controller
     }
 
 
-    protected function calcularDistancia($lat1, $long1, $lat2, $long2)
-    {
+    protected function calcularDistancia($lat1, $long1, $lat2, $long2) {
         $latitud1 = deg2rad($lat1);
         $longitud1 = deg2rad($long1);
         $latitud2 = deg2rad($lat2);
@@ -152,8 +117,6 @@ class EventoController extends Controller
             cos($latitud1) * cos($latitud2) * pow(sin($difLongitud / 2), 2)));
 
         return $angulo * 6371; // en km
-      }
-
-
+    }
 
 }

@@ -12,10 +12,6 @@ class Log extends Model
     protected $guarded = ['id'];
     protected $table = 'logs';
 
-    // protected $fillable = [
-    //     "user_id", "mensaje", "ip"
-    // ];
-
     protected $casts = [
         'logable_id' => 'integer',
         'logable_type' => 'string'

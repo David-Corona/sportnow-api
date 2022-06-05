@@ -11,25 +11,13 @@ use Exception;
 class EventoUsuariosController extends Controller
 {
 
-        //TODO: paginacion para el listado admin, orden?
-
-
     public function index(Request $request){
         try {
             $evento_usuarios = EventoUsuarios::with('evento', 'usuario')
             ->whereNull('deleted_at')
             ->filter()
             ->orderBy('evento_id','ASC')
-            // ->paginate(20)
             ->get();
-
-            // if(isset($request->page)) {
-            //     $languages = Deporte::whereNull('deleted_at')->orderBy('fecha', 'asc')->paginate(15);
-            // } else {
-            //     $languages = Deporte::whereNull('deleted_at')->orderBy('fecha', 'asc')->get();
-            // }
-
-
         } catch (Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
         }
@@ -37,11 +25,7 @@ class EventoUsuariosController extends Controller
     }
 
 
-
     public function store(Request $request) {
-
-        // TODO: no permitir mismo usuario al mismo evento
-
         try {
             $evento = Evento::with('deporte', 'participantes.usuario', 'comentarios.autor')->findOrFail($request->evento_id);
             $max_participantes = $evento->deporte->max_participantes ?? 1000;
@@ -85,7 +69,5 @@ class EventoUsuariosController extends Controller
         }
         return response()->json(['status' => 'success', 'data' => $evento->participantes, 'evento_eliminado' => $evento_eliminado], 200);
     }
-
-
 
 }

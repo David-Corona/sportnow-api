@@ -31,6 +31,9 @@ class User extends Authenticatable implements JWTSubject
         parent::boot();
         static::deleting(function($model) {
             $model->participantes()->delete();
+            $model->comentarios()->delete();
+            $model->contactos()->delete();
+            $model->logs()->delete();
         });
     }
 

@@ -9,7 +9,6 @@ class Contacto extends Model
 {
     use SoftDeletes;
 
-
     protected $table = "contacto";
     protected $guarded = ["id"];
 
@@ -53,9 +52,7 @@ class Contacto extends Model
             $query->whereDate('fecha', '>=', request('fecha_inicio'))
             ->whereDate('fecha', '<=', request('fecha_fin'));
         }
-
         return $query;
     }
-
 
 }

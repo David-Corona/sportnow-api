@@ -23,7 +23,6 @@ class CreateUsersTable extends Migration
             $table->double('latitude')->default(0);
             $table->double('longitude')->default(0);;
             $table->boolean('activated')->default(true);;
-            // $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();

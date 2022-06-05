@@ -23,7 +23,6 @@ class ContactoController extends Controller
         }
         event(new NuevoContacto($contacto));
         return response()->json(['status' => 'success', 'data' =>  $contacto], 200);
-
     }
 
 }

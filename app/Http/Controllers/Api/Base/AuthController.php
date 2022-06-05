@@ -11,7 +11,6 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Exception;
 
@@ -21,7 +20,6 @@ class AuthController extends Controller
     {
         $credentials = $request->only(['email', 'password']);
 
-        // if (!$token = auth($this->active_guard)->attempt($credentials)) {
         if (!$token = JWTAuth::attempt($credentials)) {
            return response()->json(['error' => 'Unauthorized', 'message' => 'Email o contraseña incorrectos.'], 401);
         }
@@ -58,8 +56,7 @@ class AuthController extends Controller
             'longitude' => 'required',
         ]);
 
-        if ($v->fails())
-        {
+        if ($v->fails()) {
             return response()->json([
                 'status' => 'error',
                 'errors' => $v->errors()
@@ -95,8 +92,7 @@ class AuthController extends Controller
         $token = Str::random(64);
         $user = User::where('email', $email)->get()->first();
 
-        if(is_null($user))
-        {
+        if(is_null($user)) {
             return response()->json(['status' => 'success', 'message' => 'Usuario no encontrado.'], 404);
         }
 
@@ -118,8 +114,7 @@ class AuthController extends Controller
             'password'  => 'required|min:6'
         ]);
 
-        if ($validation->fails())
-        {
+        if ($validation->fails()) {
             return response()->json(['status' => 'error', 'errors' => $validation->errors()], 422);
         }
 
@@ -127,41 +122,22 @@ class AuthController extends Controller
         $password = $request->password;
 
         $reset = PasswordResets::where('token',$token)->first();
-        if(!$reset)
-        {
+        if(!$reset) {
             return response()->json(['status' => 'error', 'message' => 'El token no es válido o ha caducado.'], 401);
         }
 
         $user = User::where('email', $reset->email)->get()->first();
-        if(!is_null($user))
-        {
+        if(!is_null($user)) {
             $user->password = bcrypt($password);
             $user->save();
             $reset->delete();
             return response()->json(['status' => 'success', 'message' => 'La contraseña se ha modificado correctamente'], 200);
         }
-        else
-        {
+        else {
             return response()->json(['status' => 'error', 'message' => 'Usuario no encontrado'], 404);
         }
     }
 
-    // public function validateAuth()
-    // {
-    //     //TODO
-
-
-    //     if (auth()->check()) {
-    //         return response()->json(['status' => 'success', 'message' => 'Autorizado'], 200);
-    //     } else {
-    //         // return response()->json(['status' => 'error', 'message' => 'No autorizado'], 401);
-    //         // return false;
-    //         throw new Exception("No autorizado");
-    //     }
-
-
-    //     // return auth()->check();
-    // }
 
     protected function respondWithToken($token)
     {

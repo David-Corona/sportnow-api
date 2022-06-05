@@ -10,6 +10,7 @@ use Exception;
 class AdminUserController extends UserController
 {
 
+    // TODO: Avatar
     public function update(Request $request, $id){
         try {
             if(isset($request->email)) {
@@ -33,24 +34,6 @@ class AdminUserController extends UserController
             if(isset($request->password)) {
                 $user->password = bcrypt($request->password);
             }
-            // if($request->hasFile('avatar')) {
-            //     $nombreFichero = $request->file('avatar')->getClientOriginalName(); // "Nombre Imagen.jpg"
-            //     $nombreAvatar = pathinfo($nombreFichero, PATHINFO_FILENAME); // "Nombre Imagen"
-            //     $extension = $request->file('avatar')->getClientOriginalExtension(); //"jpg"
-            //     $nuevoNombre = '/uploads/'.str_replace(' ', '_', $nombreAvatar).'-'.date('YmdHis').'.'.$extension; //"Nombre_Imagen-20220508115359.jpg"
-
-            //     // $path = $request->file('avatar')->storeAs(public_path().'/uploads', $nuevoNombre, 'public');
-            //     $request->file('avatar')->move(public_path('uploads'), $nuevoNombre); //guarda en public/uploads
-
-            //     $user = auth()->user();
-            //     $user->avatar = $nuevoNombre;
-            //     // $user->save();
-
-            //     return response()->json(['status' => 'success', 'data' => $user], 200);
-            // } else {
-            //     return response()->json(['status' => 'error', 'data' => 'No se ha podido cargar la imagen.'], 200);
-            // }
-
             $user->save();
 
         } catch (Exception $e) {

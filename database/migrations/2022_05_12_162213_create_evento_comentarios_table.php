@@ -15,11 +15,8 @@ class CreateEventoComentariosTable extends Migration
     {
         Schema::create('evento_comentarios', function (Blueprint $table) {
             $table->id();
-            // $table->foreignId('evento_id')->constrained('eventos')->onDelete('cascade');
             $table->integer('evento_id');
-            // $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->integer('user_id');
-            // $table->timestamp('fecha');
             $table->string('mensaje');
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();

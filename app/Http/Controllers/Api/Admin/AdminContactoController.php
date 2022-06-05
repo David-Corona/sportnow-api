@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Api\Base\ContactoController;
-use App\Http\Controllers\Controller;
 use App\Models\Contacto;
 use Illuminate\Http\Request;
 use Exception;
@@ -12,23 +11,13 @@ use Carbon\Carbon;
 class AdminContactoController extends ContactoController
 {
 
-    // TODO: paginacion?
     public function index(Request $request){
         try {
             $contacto = Contacto::with('autor')
             ->whereNull('deleted_at')
             ->filter()
             ->orderBy('created_at','ASC')
-            // ->paginate(20)
             ->get();
-
-            // if(isset($request->page)) {
-            //     $languages = Deporte::whereNull('deleted_at')->orderBy('name', 'asc')->paginate(15);
-            // } else {
-            //     $languages = Deporte::whereNull('deleted_at')->orderBy('name', 'asc')->get();
-            // }
-
-
         } catch (Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
         }
@@ -58,7 +47,5 @@ class AdminContactoController extends ContactoController
         }
         return response()->json(['status' => 'success', 'data' => $mensajes], 200);
     }
-
-
 
 }

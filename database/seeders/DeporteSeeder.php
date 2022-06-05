@@ -14,7 +14,6 @@ class DeporteSeeder extends Seeder
      */
     public function run()
     {
-        // TODO?
         DB::table('deportes')->insert([
             'nombre' => 'Baloncesto',
             'max_participantes' => 10,

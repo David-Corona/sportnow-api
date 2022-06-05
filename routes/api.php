@@ -2,15 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 
-// Base
 use App\Http\Controllers\Api\Base\AuthController;
 use App\Http\Controllers\Api\Base\UserController;
 use App\Http\Controllers\Api\Base\EventoController;
 use App\Http\Controllers\Api\Base\EventoUsuariosController;
 use App\Http\Controllers\Api\Base\EventoComentariosController;
 use App\Http\Controllers\Api\Base\ContactoController;
-
-// Admin
 use App\Http\Controllers\Api\Admin\AdminUserController;
 use App\Http\Controllers\Api\Admin\AdminDeporteController;
 use App\Http\Controllers\Api\Admin\AdminEventoController;
@@ -25,7 +22,6 @@ Route::post("auth/login", [AuthController::class, 'login']);
 Route::post("auth/register", [AuthController::class, 'register']);
 Route::post('auth/forgot-password', [AuthController::class, 'forgotPassword']);
 Route::post('auth/reset-password', [AuthController::class, 'resetPassword']);
-// Route::get('auth/validate', [AuthController::class, 'validateAuth']);
 
 // Sección Interna
 Route::group(["middleware" => "role:user,admin"], function () {
@@ -44,14 +40,11 @@ Route::group(["middleware" => "role:user,admin"], function () {
     Route::put('users/me/password', [UserController::class, 'updatePassword']);
 
     // Evento
-    // Route::apiResource('eventos', EventoController::class);
     Route::get('eventos', [EventoController::class, 'index']);
     Route::get('eventos/{id}', [EventoController::class, 'show']);
     Route::post('eventos', [EventoController::class, 'store']);
     Route::get('eventos-historial', [EventoController::class, 'historial']);
     Route::get('eventos-proximas', [EventoController::class, 'proximas']);
-    // Route::put('eventos/{id}', [EventoController::class, 'update']);
-    // Route::delete('eventos/{id}', [EventoController::class, 'destroy']);
 
     // EventoUsuarios
     Route::get('eventos-usuarios', [EventoUsuariosController::class, 'index']);
@@ -83,25 +76,19 @@ Route::group(["middleware" => "role:admin"], function () {
         Route::get('eventos-ultimos', [AdminEventoController::class, 'ultimosCreados']);
 
         // AdminEventoUsuarios
-        Route::get('eventos-usuarios', [AdminEventoUsuariosController::class, 'index']);
+        Route::apiResource('eventos-usuarios', AdminEventoUsuariosController::class);
         Route::get('eventos-usuarios-activos', [AdminEventoUsuariosController::class, 'masActivos']);
-        // Route::apiResource('eventos-usuarios', AdminEventoUsuariosController::class);
 
         // AdminEventoComentarios
         Route::apiResource('eventos-comentarios', AdminEventoComentariosController::class);
-        // Route::get('eventos-comentarios/{id}', [AdminEventoComentariosController::class, 'show']);
-        // Route::put('eventos-comentarios/{id}', [AdminEventoComentariosController::class, 'update']);
-        // Route::delete('eventos-comentarios/{id}', [AdminEventoComentariosController::class, 'destroy']);
 
         // AdminContacto
         Route::get('contacto', [AdminContactoController::class, 'index']);
         Route::get('contacto/{id}', [AdminContactoController::class, 'show']);
         Route::get('contacto-ultimos', [AdminContactoController::class, 'ultimosMensajes']);
-        // Route::apiResource('contacto', AdminContactoController::class);
 
         // AdminLogsController
         Route::get('logs', [AdminLogsController::class, 'index']);
-
     });
 
 });

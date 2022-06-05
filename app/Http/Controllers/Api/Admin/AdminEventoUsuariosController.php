@@ -7,7 +7,6 @@ use App\Models\EventoUsuarios;
 use Illuminate\Http\Request;
 use Exception;
 
-
 class AdminEventoUsuariosController extends EventoUsuariosController
 {
 
@@ -27,7 +26,5 @@ class AdminEventoUsuariosController extends EventoUsuariosController
         }
         return response()->json(['status' => 'success', 'data' => $usuariosActivos], 200);
     }
-
-
 
 }

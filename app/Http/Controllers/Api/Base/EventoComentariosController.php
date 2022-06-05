@@ -8,9 +8,6 @@ use Exception;
 
 class EventoComentariosController extends Controller
 {
-    // index, store
-
-    // TODO, paginacion no?
 
     public function index(Request $request){
         try {
@@ -18,23 +15,13 @@ class EventoComentariosController extends Controller
             ->whereNull('deleted_at')
             ->filter()
             ->orderBy('created_at','ASC')
-            // ->paginate(20)
             ->get();
-
-            // if(isset($request->page)) {
-            //     $languages = Deporte::whereNull('deleted_at')->orderBy('fecha', 'asc')->paginate(15);
-            // } else {
-            //     $languages = Deporte::whereNull('deleted_at')->orderBy('fecha', 'asc')->get();
-            // }
-
-
         } catch (Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
         }
         return response()->json(['status' => 'success', 'data' => $evento_comentarios], 200);
     }
 
-    // TODO, permitir comentar sólo a participantes?
 
     public function store(Request $request){
         $parameters = ["evento_id", "user_id", "mensaje"];
@@ -49,6 +36,5 @@ class EventoComentariosController extends Controller
         }
         return response()->json(['status' => 'success', 'data' =>  $evento_comentarios], 200);
     }
-
 
 }
