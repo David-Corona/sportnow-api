@@ -71,7 +71,7 @@ class AuthController extends Controller
         $user->longitude = $request->longitude;
         $user->role = 'user';
         $user->activated = true;
-        $user->avatar = 'https://i.ibb.co/3hNxtHH/default-avatar.jpg';
+        $user->avatar = '/avatares/default-avatar.jpg';
         $user->save();
 
         event(new NuevoUsuario($user));

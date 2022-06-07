@@ -69,17 +69,36 @@ class UserController extends Controller
 
         try {
             if($request->hasFile('avatar')) {
-                $nombreFichero = $request->file('avatar')->getClientOriginalName(); // "Nombre Imagen.jpg"
-                $nombreAvatar = pathinfo($nombreFichero, PATHINFO_FILENAME); // "Nombre Imagen"
-                $extension = $request->file('avatar')->getClientOriginalExtension(); //"jpg"
-                $nuevoNombre = '/uploads/'.str_replace(' ', '_', $nombreAvatar).'-'.date('YmdHis').'.'.$extension; //"Nombre_Imagen-20220508115359.jpg"
 
-                // $path = $request->file('avatar')->storeAs(public_path().'/uploads', $nuevoNombre, 'public');
-                $request->file('avatar')->move(public_path('uploads'), $nuevoNombre); //guarda en public/uploads
+                $file = $request->file('avatar');
+                $nombreFichero = $file->getClientOriginalName(); // "Nombre Imagen.jpg"
+                $nombreAvatar = pathinfo($nombreFichero, PATHINFO_FILENAME); // "Nombre Imagen"
+                $extension = $file->getClientOriginalExtension(); //"jpg"
+                $nuevoNombre = str_replace(' ', '_', $nombreAvatar).'-'.date('YmdHis').'.'.$extension; //"Nombre_Imagen-20220508115359.jpg"
+
+                $file->storeAs('avatares/', $nuevoNombre, 's3');
+
+
 
                 $user = auth()->user();
-                $user->avatar = $nuevoNombre;
+                $user->avatar = '/avatares/'.$nuevoNombre;
                 $user->save();
+
+
+
+
+
+                // $nombreFichero = $request->file('avatar')->getClientOriginalName(); // "Nombre Imagen.jpg"
+                // $nombreAvatar = pathinfo($nombreFichero, PATHINFO_FILENAME); // "Nombre Imagen"
+                // $extension = $request->file('avatar')->getClientOriginalExtension(); //"jpg"
+                // $nuevoNombre = '/uploads/'.str_replace(' ', '_', $nombreAvatar).'-'.date('YmdHis').'.'.$extension; //"Nombre_Imagen-20220508115359.jpg"
+
+                // // $path = $request->file('avatar')->storeAs(public_path().'/uploads', $nuevoNombre, 'public');
+                // $request->file('avatar')->move(public_path('uploads'), $nuevoNombre); //guarda en public/uploads
+
+                // $user = auth()->user();
+                // $user->avatar = $nuevoNombre;
+                // $user->save();
 
                 return response()->json(['status' => 'success', 'data' => $user], 200);
             } else {

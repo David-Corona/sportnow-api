@@ -66,6 +66,7 @@ Route::group(["middleware" => "role:admin"], function () {
         // AdminUsers
         Route::apiResource('users', AdminUserController::class);
         Route::put('users-active/{id}', [AdminUserController::class, 'activar']);
+        Route::put('users/{id}/avatar', [AdminUserController::class, 'adminUpdateAvatar']);
 
         // AdminDeporte
         Route::apiResource('deportes', AdminDeporteController::class);

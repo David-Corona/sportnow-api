@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('role');
-            $table->string('avatar')->default("defaultstringavatar");
+            $table->string('avatar')->default("/avatares/default-avatar.jpg");
             $table->double('latitude')->default(0);
             $table->double('longitude')->default(0);;
             $table->boolean('activated')->default(true);;

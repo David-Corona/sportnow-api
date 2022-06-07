@@ -31,15 +31,75 @@ class AdminUserController extends UserController
                 'activated'=> $request->activated,
                 'role' => $request->role,
             ]);
+
             if(isset($request->password)) {
                 $user->password = bcrypt($request->password);
             }
+
+            if($request->hasFile('avatar')) {
+            // if(isset($request->formData)) {
+                $file = $request->file('avatar');
+                $nombreFichero = $file->getClientOriginalName(); // "Nombre Imagen.jpg"
+                $nombreAvatar = pathinfo($nombreFichero, PATHINFO_FILENAME); // "Nombre Imagen"
+                $extension = $file->getClientOriginalExtension(); //"jpg"
+                $nuevoNombre = str_replace(' ', '_', $nombreAvatar).'-'.date('YmdHis').'.'.$extension; //"Nombre_Imagen-20220508115359.jpg"
+
+                $file->storeAs('avatares/', $nuevoNombre, 's3');
+
+                // $user = auth()->user();
+                $user->avatar = '/avatares/'.$nuevoNombre;
+                // $user->save();
+            }
+
             $user->save();
 
         } catch (Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
         }
         return response()->json(['status' => 'success', 'data' => $user], 200);
+    }
+
+    public function adminUpdateAvatar(Request $request, $id){
+
+        try {
+            if($request->hasFile('avatar')) {
+
+                $file = $request->file('avatar');
+                $nombreFichero = $file->getClientOriginalName(); // "Nombre Imagen.jpg"
+                $nombreAvatar = pathinfo($nombreFichero, PATHINFO_FILENAME); // "Nombre Imagen"
+                $extension = $file->getClientOriginalExtension(); //"jpg"
+                $nuevoNombre = str_replace(' ', '_', $nombreAvatar).'-'.date('YmdHis').'.'.$extension; //"Nombre_Imagen-20220508115359.jpg"
+
+                $file->storeAs('avatares/', $nuevoNombre, 's3');
+
+
+                $user = User::findOrFail($id);
+                $user->avatar = '/avatares/'.$nuevoNombre;
+                $user->save();
+
+
+
+
+
+                // $nombreFichero = $request->file('avatar')->getClientOriginalName(); // "Nombre Imagen.jpg"
+                // $nombreAvatar = pathinfo($nombreFichero, PATHINFO_FILENAME); // "Nombre Imagen"
+                // $extension = $request->file('avatar')->getClientOriginalExtension(); //"jpg"
+                // $nuevoNombre = '/uploads/'.str_replace(' ', '_', $nombreAvatar).'-'.date('YmdHis').'.'.$extension; //"Nombre_Imagen-20220508115359.jpg"
+
+                // // $path = $request->file('avatar')->storeAs(public_path().'/uploads', $nuevoNombre, 'public');
+                // $request->file('avatar')->move(public_path('uploads'), $nuevoNombre); //guarda en public/uploads
+
+                // $user = auth()->user();
+                // $user->avatar = $nuevoNombre;
+                // $user->save();
+
+                return response()->json(['status' => 'success', 'data' => $user], 200);
+            } else {
+                return response()->json(['status' => 'error', 'data' => 'No se ha podido cargar la imagen.'], 200);
+            }
+        } catch (Exception $e) {
+            return response()->json(['status' => 'error', 'item' => null, 'message' => $e->getMessage()]);
+        }
     }
 
     public function activar(Request $request, $id){
@@ -70,7 +130,7 @@ class AdminUserController extends UserController
                 'longitude' => $request->longitude,
                 'role' => $request->role ?? 'user',
                 'activated'=> $request->activated ?? true,
-                'avatar' => '/images/default-avatar.jpg',
+                'avatar' => '/avatares/default-avatar.jpg',
                 'created_at' => date('YYYY-MM-DD hh:mm:ss')
             ]);
 
