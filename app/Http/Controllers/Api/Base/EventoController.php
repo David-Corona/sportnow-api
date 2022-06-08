@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Exception;
 
-use function PHPSTORM_META\map;
 
 class EventoController extends Controller
 {
@@ -22,17 +21,48 @@ class EventoController extends Controller
             ->filter($request)
             ->orderBy('fecha','ASC')
             ->get();
+        } catch (Exception $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
+        }
+        return response()->json(['status' => 'success', 'data' => $eventos], 200);
+    }
+
+    public function indexFiltrado(Request $request){
+        try {
+            $eventos = Evento::with('deporte', 'participantes', 'comentarios')
+            ->whereNull('deleted_at')
+            ->where('fecha' , '>=' , Carbon::now('Europe/Madrid')->toDateTimeString())
+            ->filter($request)
+            ->orderBy('fecha','ASC')
+            ->get();
 
             $userLogged = auth()->user();
             foreach ($eventos as $evento) {
+                $max_participantes = $evento->deporte->max_participantes ?? 1000;
+                $numParticipantes = $evento->participantes->count();
+                $evento->libre = $numParticipantes < $max_participantes ? true : false;
                 $evento->distancia = $this->calcularDistancia($evento->latitud, $evento->longitud, $userLogged->latitude, $userLogged->longitude);
             };
+
+            $eventos = $eventos->filter(function($item){
+                return $item->libre == true;
+            });
+
+            if(isset($request->distancia)) {
+                $filtroDistancia = $request->distancia;
+                $eventos = $eventos->filter(function($item) use ($filtroDistancia){
+                    return $item->distancia < $filtroDistancia;
+                });
+            }
+
+            $eventos = array_values($eventos->toArray());
 
         } catch (Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
         }
         return response()->json(['status' => 'success', 'data' => $eventos], 200);
     }
+
 
     public function historial(Request $request){
         try {

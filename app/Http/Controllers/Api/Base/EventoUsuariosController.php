@@ -36,7 +36,7 @@ class EventoUsuariosController extends Controller
                 $evento_usuarios->user_id = $request->user_id ?? auth()->user()->id;
                 $evento_usuarios->evento_id = $request->evento_id;
                 $evento_usuarios->save();
-                $evento_usuarios->usuario = User::findOrFail($evento_usuarios->user_id)->get()->first();
+                $evento = Evento::with('deporte', 'participantes.usuario', 'comentarios.autor')->findOrFail($request->evento_id);
             } else {
                 return response()->json(['status' => 'error', 'message' => 'El evento ha alcanzado el máximo número de participantes'], 400);
             }
@@ -44,14 +44,13 @@ class EventoUsuariosController extends Controller
         } catch (Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
         }
-        return response()->json(['status' => 'success', 'data' => $evento_usuarios], 200);
+        return response()->json(['status' => 'success', 'data' => $evento->participantes], 200);
     }
 
 
     public function destroy($evento_id, $user_id = null) {
         try {
             $usuarioId = $user_id ?? auth()->user()->id;
-            // $usuario = User::findOrFail($usuarioId);
             $evento_usuarios = EventoUsuarios::where('evento_id', $evento_id)->where('user_id', $usuarioId)->get()->first();
             $evento_usuarios->delete();
 

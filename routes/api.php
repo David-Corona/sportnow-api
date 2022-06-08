@@ -43,6 +43,7 @@ Route::group(["middleware" => "role:user,admin"], function () {
     Route::get('eventos', [EventoController::class, 'index']);
     Route::get('eventos/{id}', [EventoController::class, 'show']);
     Route::post('eventos', [EventoController::class, 'store']);
+    Route::get('eventos-filtrado', [EventoController::class, 'indexFiltrado']);
     Route::get('eventos-historial', [EventoController::class, 'historial']);
     Route::get('eventos-proximas', [EventoController::class, 'proximas']);
 

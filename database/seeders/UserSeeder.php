@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
             'email' => 'dcoronacollis@gmail.com',
             'password' => Hash::make('123456'),
             'role' => 'admin',
-            'avatar' => '/avatares/Mr_X.jpg',
+            'avatar' => '/avatares/Mr X.jpg',
             'latitude' => 39.54,
             'longitude' => 1.14,
             'activated' => true,
