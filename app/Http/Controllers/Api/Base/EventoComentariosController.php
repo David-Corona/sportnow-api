@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Base;
 
+use App\Events\NuevoComentario;
 use App\Models\EventoComentarios;
 use Illuminate\Http\Request;
 use Exception;
@@ -34,6 +35,7 @@ class EventoComentariosController extends Controller
         } catch (Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
         }
+        event(new NuevoComentario($evento_comentarios));
         return response()->json(['status' => 'success', 'data' =>  $evento_comentarios], 200);
     }
 

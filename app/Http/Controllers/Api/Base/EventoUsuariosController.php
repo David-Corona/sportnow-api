@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Base;
 
+use App\Events\NuevaParticipacion;
 use App\Models\Evento;
 use App\Models\EventoUsuarios;
 use App\Models\User;
@@ -44,6 +45,7 @@ class EventoUsuariosController extends Controller
         } catch (Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
         }
+        event(new NuevaParticipacion($evento_usuarios));
         return response()->json(['status' => 'success', 'data' => $evento->participantes], 200);
     }
 

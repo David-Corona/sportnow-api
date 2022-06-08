@@ -8,9 +8,13 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 use Illuminate\Support\Facades\Event;
 
 use App\Events\CrearEvento;
+use App\Events\NuevaParticipacion;
+use App\Events\NuevoComentario;
 use App\Events\NuevoContacto;
 use App\Events\NuevoUsuario;
 use App\Listeners\CrearEventoListener;
+use App\Listeners\NuevaParticipacionListener;
+use App\Listeners\NuevoComentarioListener;
 use App\Listeners\NuevoContactoListener;
 use App\Listeners\NuevoUsuarioListener;
 
@@ -33,6 +37,12 @@ class EventServiceProvider extends ServiceProvider
         ],
         NuevoUsuario::class => [
             NuevoUsuarioListener::class
+        ],
+        NuevaParticipacion::class => [
+            NuevaParticipacionListener::class
+        ],
+        NuevoComentario::class => [
+            NuevoComentarioListener::class
         ],
 
 
