@@ -17,6 +17,7 @@ class CreateEventoUsuariosTable extends Migration
             $table->id();
             $table->integer('evento_id');
             $table->integer('user_id');
+            $table->unique(['evento_id', 'user_id']);
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
         });

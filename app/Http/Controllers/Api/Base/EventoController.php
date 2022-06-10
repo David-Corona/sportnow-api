@@ -15,7 +15,7 @@ class EventoController extends Controller
 
     public function index(Request $request){
         try {
-            $eventos = Evento::with('deporte', 'participantes', 'comentarios')
+            $eventos = Evento::with('deporte', 'participantes', 'comentarios.autor')
             ->whereNull('deleted_at')
             ->where('fecha' , '>=' , Carbon::now('Europe/Madrid')->toDateTimeString())
             ->filter($request)
@@ -32,6 +32,9 @@ class EventoController extends Controller
             $eventos = Evento::with('deporte', 'participantes', 'comentarios')
             ->whereNull('deleted_at')
             ->where('fecha' , '>=' , Carbon::now('Europe/Madrid')->toDateTimeString())
+            ->whereDoesntHave('participantes', function($q){
+                $q->where('user_id', '=', auth()->user()->id);
+            })
             ->filter($request)
             ->orderBy('fecha','ASC')
             ->get();

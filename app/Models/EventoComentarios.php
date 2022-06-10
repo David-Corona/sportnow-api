@@ -35,8 +35,10 @@ class EventoComentarios extends Model
         if (request('evento_id')) {
             $query->where('evento_id', request('evento_id'));
         }
-        if (request('user_id')) {
-            $query->where('user_id', request('user_id'));
+        if(request('usuario')) {
+            $query->whereHas('autor', function($q){
+                $q->where('name', 'like','%'.request('usuario').'%');
+            });
         }
         if (request('mensaje')) {
             $query->where('mensaje', 'like', '%'.request('mensaje').'%');

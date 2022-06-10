@@ -48,5 +48,31 @@ class AdminEventoController extends EventoController
         return response()->json(['status' => 'success', 'data' => $eventos], 200);
     }
 
+    public function listadoSelect(){
+        try {
+            $eventos = Evento::with('deporte', 'participantes', 'comentarios')
+            ->whereNull('deleted_at')
+            ->where('fecha' , '>=' , Carbon::now('Europe/Madrid')->toDateTimeString())
+            ->orderBy('id','ASC')
+            ->get();
+
+            foreach ($eventos as $evento) {
+                $max_participantes = $evento->deporte->max_participantes ?? 1000;
+                $numParticipantes = $evento->participantes->count();
+                $evento->libre = $numParticipantes < $max_participantes ? true : false;
+            };
+
+            $eventos = $eventos->filter(function($item){
+                return $item->libre == true;
+            });
+
+            $eventos = array_values($eventos->toArray());
+
+        } catch (Exception $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
+        }
+        return response()->json(['status' => 'success', 'data' => $eventos], 200);
+    }
+
 
 }

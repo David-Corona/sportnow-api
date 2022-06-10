@@ -27,4 +27,14 @@ class AdminEventoUsuariosController extends EventoUsuariosController
         return response()->json(['status' => 'success', 'data' => $usuariosActivos], 200);
     }
 
+    public function delete($id) {
+        try {
+            $participacion = EventoUsuarios::findOrFail($id);
+            $participacion->delete();
+        } catch (Exception $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
+        }
+        return response()->json(['status' => 'success'], 200);
+    }
+
 }

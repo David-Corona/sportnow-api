@@ -75,10 +75,13 @@ Route::group(["middleware" => "role:admin"], function () {
 
         // AdminEvento
         Route::apiResource('eventos', AdminEventoController::class);
+        Route::get('eventos-select', [AdminEventoController::class, 'listadoSelect']);
         Route::get('eventos-ultimos', [AdminEventoController::class, 'ultimosCreados']);
 
         // AdminEventoUsuarios
-        Route::apiResource('eventos-usuarios', AdminEventoUsuariosController::class);
+        // Route::apiResource('eventos-usuarios', AdminEventoUsuariosController::class);
+        Route::get('eventos-usuarios', [AdminEventoUsuariosController::class, 'index']);
+        Route::delete('eventos-usuarios/{id}', [AdminEventoUsuariosController::class, 'delete']);
         Route::get('eventos-usuarios-activos', [AdminEventoUsuariosController::class, 'masActivos']);
 
         // AdminEventoComentarios

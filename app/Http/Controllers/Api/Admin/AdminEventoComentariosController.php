@@ -44,5 +44,4 @@ class AdminEventoComentariosController extends EventoComentariosController
         return response()->json(['status' => 'success'], 200);
     }
 
-
 }

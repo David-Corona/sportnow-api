@@ -8,15 +8,13 @@ use Illuminate\Support\Facades\Validator;
 use Exception;
 
 
-// use Intervention\Image\ImageManagerStatic as Image;
-
 class UserController extends Controller
 {
 
     public function index(Request $request)
     {
         try{
-            $users = User::where('deleted_at', null)->filter()->orderBy('name','ASC')->get();
+            $users = User::where('deleted_at', null)->filter()->orderBy('id','ASC')->get();
             return response()->json(['status' => 'success', 'data' => $users], 200);
         } catch (Exception $e) {
             return response()->json(['status' => 'error', 'item' => null, 'message' => $e->getMessage()]);
@@ -64,7 +62,7 @@ class UserController extends Controller
         }
     }
 
-    //TODO: Problema con almacenamiento efimero de Heroku
+
     public function updateAvatar(Request $request){
 
         try {
@@ -75,34 +73,15 @@ class UserController extends Controller
                 $nombreAvatar = pathinfo($nombreFichero, PATHINFO_FILENAME); // "Nombre Imagen"
                 $extension = $file->getClientOriginalExtension(); //"jpg"
                 $nuevoNombre = str_replace(' ', '_', $nombreAvatar).'-'.date('YmdHis').'.'.$extension; //"Nombre_Imagen-20220508115359.jpg"
-
                 $file->storeAs('avatares/', $nuevoNombre, 's3');
-
-
 
                 $user = auth()->user();
                 $user->avatar = '/avatares/'.$nuevoNombre;
                 $user->save();
 
-
-
-
-
-                // $nombreFichero = $request->file('avatar')->getClientOriginalName(); // "Nombre Imagen.jpg"
-                // $nombreAvatar = pathinfo($nombreFichero, PATHINFO_FILENAME); // "Nombre Imagen"
-                // $extension = $request->file('avatar')->getClientOriginalExtension(); //"jpg"
-                // $nuevoNombre = '/uploads/'.str_replace(' ', '_', $nombreAvatar).'-'.date('YmdHis').'.'.$extension; //"Nombre_Imagen-20220508115359.jpg"
-
-                // // $path = $request->file('avatar')->storeAs(public_path().'/uploads', $nuevoNombre, 'public');
-                // $request->file('avatar')->move(public_path('uploads'), $nuevoNombre); //guarda en public/uploads
-
-                // $user = auth()->user();
-                // $user->avatar = $nuevoNombre;
-                // $user->save();
-
                 return response()->json(['status' => 'success', 'data' => $user], 200);
             } else {
-                return response()->json(['status' => 'error', 'data' => 'No se ha podido cargar la imagen.'], 200);
+                return response()->json(['status' => 'error', 'data' => 'No se ha podido cargar la imagen.'], 400);
             }
         } catch (Exception $e) {
             return response()->json(['status' => 'error', 'item' => null, 'message' => $e->getMessage()]);

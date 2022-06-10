@@ -30,9 +30,6 @@ class Contacto extends Model
 
     public function scopeFilter($query)
     {
-        if (request('user_id')) {
-            $query->where('user_id', request('user_id'));
-        }
         if (request('mensaje')) {
             $query->where('mensaje', 'like', '%'.request('mensaje').'%');
         }
@@ -40,17 +37,22 @@ class Contacto extends Model
             $query->where('asunto', 'like', '%'.request('asunto').'%');
         }
         if (request('motivo')) {
-            $query->where('motivo', 'like', '%'.request('motivo').'%');
+            $query->where('motivo', request('motivo'));
         }
         if (request('fecha_inicio') && !request('fecha_fin')) {
-            $query->whereDate('fecha', '>=', request('fecha_inicio'));
+            $query->whereDate('created_at', '>=', request('fecha_inicio'));
         }
         else if (!request('fecha_inicio') && request('fecha_fin')) {
-            $query->whereDate('fecha', '<=', request('fecha_fin'));
+            $query->whereDate('created_at', '<=', request('fecha_fin'));
         }
         else if (request('fecha_inicio') && request('fecha_fin')) {
-            $query->whereDate('fecha', '>=', request('fecha_inicio'))
-            ->whereDate('fecha', '<=', request('fecha_fin'));
+            $query->whereDate('created_at', '>=', request('fecha_inicio'))
+            ->whereDate('created_at', '<=', request('fecha_fin'));
+        }
+        if(request('autor')) {
+            $query->whereHas('autor', function($q){
+                $q->where('name', 'like','%'.request('autor').'%');
+            });
         }
         return $query;
     }

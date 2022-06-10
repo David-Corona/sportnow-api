@@ -36,8 +36,26 @@ class EventoUsuarios extends Model
         if (request('evento_id')) {
             $query->where('evento_id', request('evento_id'));
         }
-        if (request('user_id')) {
-            $query->where('user_id', request('user_id'));
+        if(request('usuario')) {
+            $query->whereHas('usuario', function($q){
+                $q->where('name', 'like','%'.request('usuario').'%');
+            });
+        }
+        if (request('fecha_inicio') && !request('fecha_fin')) {
+            $query->whereHas('evento', function($q){
+                $q->whereDate('fecha', '>=', request('fecha_inicio'));
+            });
+        }
+        else if (!request('fecha_inicio') && request('fecha_fin')) {
+            $query->whereHas('evento', function($q){
+                $q->whereDate('fecha', '<=', request('fecha_fin'));
+            });
+        }
+        else if (request('fecha_inicio') && request('fecha_fin')) {
+            $query->whereHas('evento', function($q){
+                $q->whereDate('fecha', '>=', request('fecha_inicio'))
+                ->whereDate('fecha', '<=', request('fecha_fin'));
+            });
         }
         return $query;
     }
