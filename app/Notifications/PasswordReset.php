@@ -34,7 +34,8 @@ class PasswordReset extends Notification
         ->subject('Recuperación de contraseña')
         ->line('Has recibido este email porque has solicitado la recuperación de contraseña de tu cuenta.')
         ->action('Resetear contraseña','https://sportnow.netlify.app/auth/reset-password/' . $this->token)
-        ->line('Si no has sido tú, puedes ignorar este email.');
+        ->line('Si no has sido tú, puedes ignorar este email.')
+        ->salutation("SportNow");
     }
 
     public function toArray($notifiable)
