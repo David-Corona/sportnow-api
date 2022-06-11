@@ -17,25 +17,25 @@ class DeporteSeeder extends Seeder
         DB::table('deportes')->insert([
             'nombre' => 'Baloncesto',
             'max_participantes' => 10,
-            'imagen' => 'https://i.ibb.co/W3zt49v/dep-basket.jpg'
+            'imagen' => '/deportes/dep_basket.jpg'
         ]);
         DB::table('deportes')->insert([
             'nombre' => 'Ciclismo',
-            'imagen' => 'https://i.ibb.co/G3KYyGR/ciclismo-dep.jpg'
+            'imagen' => '/deportes/ciclismo_dep.jpg'
         ]);
         DB::table('deportes')->insert([
             'nombre' => 'Fútbol Sala',
             'max_participantes' => 10,
-            'imagen' => 'https://i.ibb.co/ZdZThG6/dep-futbol.png'
+            'imagen' => '/deportes/dep_futbol.png'
         ]);
         DB::table('deportes')->insert([
             'nombre' => 'Padel',
             'max_participantes' => 4,
-            'imagen' => 'https://i.ibb.co/1znz6yX/dep-tenis.jpg'
+            'imagen' => '/deportes/dep_tenis.jpg'
         ]);
         DB::table('deportes')->insert([
             'nombre' => 'Running',
-            'imagen' => 'https://i.ibb.co/bFpDST1/run-dep.jpg'
+            'imagen' => '/deportes/run_dep.jpg'
         ]);
     }
 }
