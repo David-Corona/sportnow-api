@@ -32,7 +32,7 @@ class Deporte extends Model
     public function scopeFilter($query)
     {
         if (request('nombre')) {
-            $query->where('nombre', 'like', '%'.request('nombre').'%');
+            $query->where('nombre', 'ilike', '%'.request('nombre').'%');
         }
         if (request('max_participantes')) {
             $query->where('max_participantes', request('max_participantes'));

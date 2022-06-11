@@ -31,10 +31,10 @@ class Log extends Model
     public function scopeFilter($query)
     {
         if (request('ip')) {
-            $query->where('ip', 'like', '%'.request('ip').'%');
+            $query->where('ip', 'ilike', '%'.request('ip').'%');
         }
         if (request('mensaje')) {
-            $query->where('mensaje', 'like', '%'.request('mensaje').'%');
+            $query->where('mensaje', 'ilike', '%'.request('mensaje').'%');
         }
         if (request('fecha_inicio') && !request('fecha_fin')) {
             $query->whereDate('created_at', '>=', request('fecha_inicio'));
@@ -48,7 +48,7 @@ class Log extends Model
         }
         if(request('autor')) {
             $query->whereHas('autor', function($q){
-                $q->where('name', 'like','%'.request('autor').'%');
+                $q->where('name', 'ilike','%'.request('autor').'%');
             });
         }
         return $query;

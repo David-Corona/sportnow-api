@@ -53,7 +53,7 @@ class Evento extends Model
             $query->where('deporte_id', request('deporte_id'));
         }
         if (request('titulo')) {
-            $query->where('titulo', 'like', '%'.request('titulo').'%');
+            $query->where('titulo', 'ilike', '%'.request('titulo').'%');
         }
         if (request('fecha_inicio') && !request('fecha_fin')) {
             $query->whereDate('fecha', '>=', request('fecha_inicio'));

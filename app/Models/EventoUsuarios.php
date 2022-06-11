@@ -36,7 +36,7 @@ class EventoUsuarios extends Model
         }
         if(request('usuario')) {
             $query->whereHas('usuario', function($q){
-                $q->where('name', 'like','%'.request('usuario').'%');
+                $q->where('name', 'ilike','%'.request('usuario').'%');
             });
         }
         if (request('fecha_inicio') && !request('fecha_fin')) {

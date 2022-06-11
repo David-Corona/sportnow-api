@@ -31,10 +31,10 @@ class Contacto extends Model
     public function scopeFilter($query)
     {
         if (request('mensaje')) {
-            $query->where('mensaje', 'like', '%'.request('mensaje').'%');
+            $query->where('mensaje', 'ilike', '%'.request('mensaje').'%');
         }
         if (request('asunto')) {
-            $query->where('asunto', 'like', '%'.request('asunto').'%');
+            $query->where('asunto', 'ilike', '%'.request('asunto').'%');
         }
         if (request('motivo')) {
             $query->where('motivo', request('motivo'));
@@ -51,7 +51,7 @@ class Contacto extends Model
         }
         if(request('autor')) {
             $query->whereHas('autor', function($q){
-                $q->where('name', 'like','%'.request('autor').'%');
+                $q->where('name', 'ilike','%'.request('autor').'%');
             });
         }
         return $query;

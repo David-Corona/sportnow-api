@@ -117,6 +117,9 @@ class EventoController extends Controller
 
 
     public function store(Request $request){
+        if ($request->fecha < Carbon::now('Europe/Madrid')->toDateTimeString()) {
+            return response()->json(['status' => 'error', 'message' => "La fecha debe ser posterior a la actual"], 400);
+        }
         $parameters = ["deporte_id", "fecha", "titulo", "descripcion", "direccion", "latitud", "longitud"];
         try {
             $evento = New Evento();

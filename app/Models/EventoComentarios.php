@@ -37,11 +37,11 @@ class EventoComentarios extends Model
         }
         if(request('usuario')) {
             $query->whereHas('autor', function($q){
-                $q->where('name', 'like','%'.request('usuario').'%');
+                $q->where('name', 'ilike','%'.request('usuario').'%');
             });
         }
         if (request('mensaje')) {
-            $query->where('mensaje', 'like', '%'.request('mensaje').'%');
+            $query->where('mensaje', 'ilike', '%'.request('mensaje').'%');
         }
         if (request('fecha_inicio') && !request('fecha_fin')) {
             $query->whereDate('created_at', '>=', request('fecha_inicio'));
